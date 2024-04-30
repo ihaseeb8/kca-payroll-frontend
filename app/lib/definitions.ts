@@ -86,3 +86,14 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+
+// ---------------------------------- KCA ----------------------------------------------------
+
+export type Designation = {
+  id: number
+  designationName: string
+  shortName: string
+  description: string
+  status: "active" | "inactive"
+}

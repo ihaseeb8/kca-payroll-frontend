@@ -15,9 +15,8 @@ import clsx from 'clsx';
 
 export default function Form() {
 
-    const initialState = { message: null, errors: {} };
-    const[state, dispatch] = useFormState(createDesignation, initialState);
-    console.log(state)
+  const initialState = { message: null, errors: {} };
+  const [state, dispatch] = useFormState(createDesignation, initialState);
 
   return (
     <form action={dispatch}>
@@ -34,7 +33,7 @@ export default function Form() {
                 name="designationName"
                 type="text"
                 placeholder="Enter designation name"
-                className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="desgination-name-error"
               />
             </div>
@@ -62,7 +61,7 @@ export default function Form() {
                 name="shortName"
                 type="text"
                 placeholder="Enter designation's short name"
-                className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby='designation-shortname-error'
               />
             </div>
@@ -89,8 +88,8 @@ export default function Form() {
                 id="description"
                 name="description"
                 type="text"
-                placeholder="Enter designation's description"
-                className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+                placeholder="Enter designation's description (optional)"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby='designation-description-error'
               />
             </div>
@@ -108,13 +107,7 @@ export default function Form() {
 
         <div id="form-response" aria-live="polite" aria-atomic="true" className='mb-4 md:flex justify-center'>
             {state.message && (
-                <p className={clsx(
-                    "mt-4 text-lg",
-                    {
-                      "text-red-500": !state.success,
-                      "text-green-600": state.success,
-                    }
-                  )} >
+                <p className={"mt-4 text-lg text-red-500"} >
                 {state.message}
                 </p>
             )}

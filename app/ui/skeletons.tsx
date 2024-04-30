@@ -216,3 +216,62 @@ export function InvoicesTableSkeleton() {
     </div>
   );
 }
+
+// ------------------------------------------ My Own Skeletons -----------------------------
+
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+export function DesignationRowSkeleton() {
+
+  return(
+    <TableRow>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    </TableRow>
+  )
+}
+
+export function DesignationTableSkeleton() {
+
+  return (
+    
+    <div className="rounded-md border mt-4">
+      <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Short Name</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>...</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+        <DesignationRowSkeleton />
+      </TableBody>
+    </Table>      
+
+    </div>
+  )
+}
