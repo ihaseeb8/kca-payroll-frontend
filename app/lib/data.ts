@@ -12,6 +12,10 @@ import { formatCurrency } from './utils';
 
 import { unstable_noStore as noStore } from 'next/cache';
 
+// definning out endpoint
+const endpoint = process.env.API_URL;
+
+
 export async function fetchRevenue() {
   
   // Add noStore() here to prevent the response from being cached.
@@ -241,4 +245,48 @@ export async function getUser(email: string) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
   }
+}
+
+
+// ----------------------------------- get designations --------------------------------- 
+
+export async function fetchDesignationsPages(pageSize: number = 10) {
+  noStore();
+
+  try {
+    const response = await fetch(`${endpoint}/api/designations?pageSize=${pageSize}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const object = await response.json();
+
+    return object.data.totalPages
+
+  } catch (error) {
+
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch designation pages.');
+
+  }
+}
+
+export async function fetchDesignations(pageSize: number = 10, currentPage: number = 1){
+
+  try{
+    const response = await fetch(`${endpoint}/api/designations?currentPage=${currentPage}&pageSize=${pageSize}`)
+
+    if(!response.ok){
+      throw new Error(`Failed to fetch data, status: ${response.status}`)
+    }
+    const object = await response.json();
+
+    return object.data.designations
+
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch designation table. error');
+  }
+
 }
