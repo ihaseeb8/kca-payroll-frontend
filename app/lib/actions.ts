@@ -4,6 +4,7 @@ import {z} from 'zod'
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
 
 
 // definning out endpoint
@@ -135,7 +136,8 @@ export async function updateInvoice(id: string, formData: FormData) {
   };
 
   export async function createDesignation(prevState: DesignationFormState, formData: FormData) {
-    
+    noStore();
+
     // validate form fields using Zod
     const validatedFields = DesignationFormSchema.safeParse({
       designationName: formData.get('designationName'),
@@ -159,10 +161,10 @@ export async function updateInvoice(id: string, formData: FormData) {
         body: JSON.stringify(validatedFields.data)
       });
 
+      const body = await response.json()
+      
       if (!response.ok) {
-        const body = await response.json()
-
-        throw new Error(`Database Error : ${body?.message}`);
+        throw new Error(`${body?.message}`);
       }
 
     } catch (error: any) {
@@ -178,4 +180,79 @@ export async function updateInvoice(id: string, formData: FormData) {
 
 }
 
-  // ----------------------------------- get desginations --------------------------------------------------------------
+  // ----------------------------------- Deactivate Designation --------------------------------------------------------------
+
+  export async function deactivateDesignation(id: number) {
+    noStore();
+
+    try{
+      const response = await fetch(`${endpoint}/api/designations/deactivateDesignation/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+      const body = await response.json()
+
+      if(!response.ok){
+        throw new Error(`Database Error: ${body?.message}`);
+      }
+
+      revalidatePath('/dashboard/designations')
+      return {message: "Designation Deactivated Successfully"}
+
+    } catch( error : Error | any ) {
+      console.error(error)
+      return { message: error.message}
+    }
+
+  }
+
+  // ------------------------------- Update Designation ------------------ 
+  export async function updateDesignation(id: number, prevState: DesignationFormState, formData: FormData) {
+    noStore();
+
+    // validate form fields using Zod
+    const validatedFields = DesignationFormSchema.safeParse({
+      designationName: formData.get('designationName'),
+      shortName: formData.get('shortName'),
+      description: formData.get('description')
+    })
+
+    if (!validatedFields.success) {
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: 'Missing Fields. Failed to Update Invoice.',
+      };
+    }
+
+    try {
+      const response = await fetch(`${endpoint}/api/designations/updateDesignation/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(validatedFields.data)
+      });
+
+      const body = await response.json()
+
+      console.log(body)
+      
+      if (!response.ok) {
+        throw new Error(`${body?.message}`);
+      }
+
+    } catch (error: any) {
+      console.log(error.message)
+      return {
+        message: error.message,
+      };
+    }
+
+    // Revalidate the cache for the invoices page and redirect the user.
+    revalidatePath('/dashboard/designations');
+    redirect('/dashboard/designations')
+
+}

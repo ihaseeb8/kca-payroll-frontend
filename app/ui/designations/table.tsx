@@ -9,10 +9,12 @@ import { fetchDesignations } from '@/app/lib/data';
 
 export default async function DesignationsTable({
   currentPage,
+  query
 }: {
-  currentPage: number;
+  currentPage: number,
+  query: string
 }) {
-  const designations = await fetchDesignations(undefined, currentPage);
+  const designations = await fetchDesignations(undefined, currentPage, query);
 
   return (
     <div className="mt-6 flow-root">

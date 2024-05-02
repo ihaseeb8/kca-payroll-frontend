@@ -250,11 +250,11 @@ export async function getUser(email: string) {
 
 // ----------------------------------- get designations --------------------------------- 
 
-export async function fetchDesignationsPages(pageSize: number = 10) {
+export async function fetchDesignationsPages(pageSize: number = 10, query: string) {
   noStore();
 
   try {
-    const response = await fetch(`${endpoint}/api/designations?pageSize=${pageSize}`);
+    const response = await fetch(`${endpoint}/api/designations?pageSize=${pageSize}&query=${query}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -262,7 +262,12 @@ export async function fetchDesignationsPages(pageSize: number = 10) {
 
     const object = await response.json();
 
-    return object.data.totalPages
+    if(object?.data?.totalPages){
+      return object.data.totalPages
+    } else {
+      return 0;
+    }
+    
 
   } catch (error) {
 
@@ -272,21 +277,48 @@ export async function fetchDesignationsPages(pageSize: number = 10) {
   }
 }
 
-export async function fetchDesignations(pageSize: number = 10, currentPage: number = 1){
+export async function fetchDesignations(pageSize: number = 10, currentPage: number = 1, query: string){
+  noStore();
 
   try{
-    const response = await fetch(`${endpoint}/api/designations?currentPage=${currentPage}&pageSize=${pageSize}`)
+    const response = await fetch(`${endpoint}/api/designations?currentPage=${currentPage}&pageSize=${pageSize}&query=${query}`)
 
     if(!response.ok){
       throw new Error(`Failed to fetch data, status: ${response.status}`)
     }
     const object = await response.json();
 
-    return object.data.designations
+    if(object?.data?.designations){
+      return object.data.designations
+    } else {
+      return [];
+    }
 
   } catch (error) {
     console.error(error);
     throw new Error('Failed to fetch designation table. error');
   }
 
+}
+
+export async function getDesignation(id: number){
+  noStore();
+
+  try {
+    const response = await fetch(`${endpoint}/api/designations/${id}`)
+
+    const body = await response.json()
+    
+    if(!response.ok){
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    if(body?.data){
+      return body.data
+    } 
+
+  } catch (error){
+    console.error(error)
+    throw new Error('Failed to fetch designation for the given id');
+  }
 }
