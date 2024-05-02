@@ -8,28 +8,7 @@ import Pagination from "@/app/ui/invoices/pagination";
 import Table from "@/app/ui/designations/table"
 import { Suspense } from "react";
 import { DesignationTableSkeleton } from "@/app/ui/skeletons";
-
-async function getData(): Promise<Designation[]> {
-  // Fetch data from your API here.
-
-  return [
-    {
-        id: 1,
-        designationName: "Software Engineer",
-        shortName: "SE",
-        description: "A software engineer is a person who applies the principles of software engineering to the design, development, maintenance, testing, and evaluation of computer software.",
-        status: "active"
-      },
-      {
-        id: 2,
-        designationName: "Product Manager",
-        shortName: "PM",
-        description: "A product manager is a professional role that is responsible for the development of products for an organization, known as the practice of product management.",
-        status: "inactive"
-      },
-    // ...
-  ]
-}
+import Search from "@/app/ui/search";
 
 export default async function Page({
     searchParams
@@ -41,14 +20,11 @@ export default async function Page({
     }
 }) {
 
-    const query = searchParams?.query || "";
-    const currentPage = Number(searchParams?.currentPage) || 1;
-    const pageSize = Number(searchParams?.pageSize) || 10;
+  const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.currentPage) || 1;
+  const pageSize = Number(searchParams?.pageSize) || 10;
 
-    const totalPages = await fetchDesignationsPages(10);
-
-
-  const data = await getData()
+  const totalPages = await fetchDesignationsPages(pageSize, query);
 
   return (
     <div className="w-full">
@@ -56,11 +32,11 @@ export default async function Page({
             <h1 className={`${lusitana.className} text-2xl`}>Designations</h1>
         </div>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        {/* <Search placeholder="Search invoices..." /> */}
+        <Search placeholder="Search designations..." />
             <CreateDesignation />
         </div>
         <Suspense key={query + currentPage} fallback={<DesignationTableSkeleton />}>
-          <Table currentPage={currentPage} />
+          <Table currentPage={currentPage} query={query}/>
         </Suspense>
         <div className="mt-5 flex w-full justify-center">
           <Pagination totalPages={totalPages} />
