@@ -137,7 +137,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
 
         <div className="mb-4">
         <label htmlFor="fatherName" className="mb-2 block text-sm font-medium">
-            Father's Name
+            {"Father's Name"}
         </label>
         <input
             id="fatherName"
@@ -159,7 +159,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
 
         <div className="mb-4">
           <label htmlFor="fkDesignationId" className="mb-2 block text-sm font-medium">
-            Employee's Designation
+            {"Employee's Designation"}
           </label>
           <div className="relative">
             <select
@@ -339,7 +339,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
         <>
           <div className="mb-4">
             <label htmlFor="wifeName" className="mb-2 block text-sm font-medium">
-              Wife's Name
+              {"Wife's Name"}
             </label>
             <input
               id="wifeName"
@@ -361,7 +361,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
 
           <div className="mb-4">
             <label htmlFor="wifeCnic" className="mb-2 block text-sm font-medium">
-              Wife's CNIC
+              {"Wife's CNIC"}
             </label>
             <input
               id="wifeCnic"
@@ -424,7 +424,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
               <div className="mb-4">
                 <div className="flex justify-between">
                     <label htmlFor={`childName${index}`} className="mb-2 block text-sm font-medium">
-                    Child's Name
+                      {"Child's Name"}
                     </label>
 
                     <button
@@ -448,7 +448,7 @@ export default function EmployeeForm({designations}: {designations: Designation[
 
               <div className="mb-4">
                 <label htmlFor={`childDateOfBirth${index}`} className="mb-2 block text-sm font-medium">
-                  Child's Date of Birth
+                  {"Child's Date of Birth"}
                 </label>
                 <input
                     id={`childDateOfBirth${index}`}
