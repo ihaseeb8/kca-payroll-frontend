@@ -301,6 +301,30 @@ export async function fetchDesignations(pageSize: number = 10, currentPage: numb
 
 }
 
+export async function fetchActiveDesignations(pageSize: number = 10, currentPage: number = 1){
+  noStore();
+
+  try{
+    const response = await fetch(`${endpoint}/api/designations?currentPage=${currentPage}&pageSize=${pageSize}&status=active`)
+
+    if(!response.ok){
+      throw new Error(`Failed to fetch data, status: ${response.status}`)
+    }
+    const object = await response.json();
+
+    if(object?.data?.designations){
+      return object.data.designations
+    } else {
+      return [];
+    }
+
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch designation table. error');
+  }
+
+}
+
 export async function getDesignation(id: number){
   noStore();
 
