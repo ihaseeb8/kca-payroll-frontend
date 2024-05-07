@@ -97,3 +97,12 @@ export type Designation = {
   description: string
   status: "active" | "inactive"
 }
+
+export type Employee = {
+  id: number
+  name: string
+  cnic: string
+  mobileNumber: string
+  emailAddress: string
+  status: "active" | "inactive"
+}

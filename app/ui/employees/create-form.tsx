@@ -10,7 +10,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createEmployee } from "@/app/lib/actions";
+import { createEmployee } from "@/app/lib/actions/employees";
 import { Designation } from "@/app/lib/definitions";
 
 // ... other imports ...
