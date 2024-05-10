@@ -110,7 +110,7 @@ export default function Form({
         </div>
         <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
             {state.errors?.fkEmployeeId &&
-            state.errors.fkEmployeeId.map((error: number) => (
+            state.errors.fkEmployeeId.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
                 </p>
