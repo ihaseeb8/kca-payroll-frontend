@@ -17,14 +17,12 @@ const endpoint = process.env.API_URL;
 const RigLocationFormSchema = z.object({
     rigBase: z.string().min(1, "Rig Base is required"),
     rigBaseOffice: z.string().min(1, "Rig Base Office is required"),
-    rigStatus: z.string()
 })
 
 export type RigLocationFormState = {
     errors?: {
         rigBase?: string[];
         rigBaseOffice?: string[];
-        rigStatus?: string[];
     };
     message?: string | null;
 };
