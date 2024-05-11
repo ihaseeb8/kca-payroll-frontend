@@ -5,19 +5,22 @@ import { fetchEmployees } from '@/app/lib/actions/employees';
 export default async function EmployeesTable({
   currentPage,
   pageSize,
+  id,
   name,
   status,
   cnic,
   mobileNumber
 }: {
-  currentPage: number
-  pageSize: number
-  name: string
-  status: string
-  mobileNumber: string
-  cnic: string
+  currentPage: number;
+  pageSize: number;
+  id: number | undefined;
+  name: string;
+  status: string;
+  mobileNumber: string;
+  cnic: string;
 }) {
-  const employees = await fetchEmployees(pageSize,currentPage,name,cnic,mobileNumber);
+
+  const employees = await fetchEmployees(pageSize,currentPage,id,name,cnic,mobileNumber);
 
   return (
     <div className="mt-6 flow-root">

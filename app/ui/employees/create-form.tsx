@@ -17,12 +17,12 @@ import { Designation } from "@/app/lib/definitions";
 
 export default function EmployeeForm({designations}: {designations: Designation[]}) {
   const initialState = { message: null, errors: {} };
-  const [isMarried, setIsMarried] = useState(false);
 
   const [state, dispatch] = useFormState(createEmployee, initialState);
 
   const [haveChildren, setHaveChildren] = useState(false);
   const [children, setChildren] = useState([{ name: '', dateOfBirth: '' }]);
+  const [isMarried, setIsMarried] = useState(false);
 
   const handleAddChild = () => {
     setChildren([...children, { name: '', dateOfBirth: '' }]);
@@ -51,8 +51,35 @@ export default function EmployeeForm({designations}: {designations: Designation[
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
 
-        {/* Employees Name */}
+        {/* Employees ID */}
 
+        <div className="mb-4">
+          <label htmlFor="id" className="mb-2 block text-sm font-medium">
+            Employee Number
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="id"
+                name="id"
+                type="number"
+                placeholder="Enter employee's number/id"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
+                aria-describedby="desgination-name-error"
+              />
+            </div>
+          </div>
+        </div>
+        <div id="name-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            {state.errors?.id &&
+            state.errors.id.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+                </p>
+            ))}
+        </div>
+
+        {/*  Name  */}
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
             Name
@@ -77,6 +104,41 @@ export default function EmployeeForm({designations}: {designations: Designation[
                 {error}
                 </p>
             ))}
+        </div>
+
+        {/* Gender */}
+        <div className="mb-4">
+            <label className="mb-2 block text-sm font-medium">
+              Gender
+            </label>
+            <div>
+            <input
+                id="genderMale"
+                name="gender"
+                type="radio"
+                value="Male"
+            />
+            <label htmlFor="genderMale" className="ml-2">Male</label>
+            </div>
+            <div>
+            <input
+                id="genderFemale"
+                name="gender"
+                type="radio"
+                value="Female"
+            />
+            <label htmlFor="genderFemale" className="ml-2">Female</label>
+            </div>
+
+            <div id="gender-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            {state.errors?.gender &&
+            state.errors.gender.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+                </p>
+            ))}
+            </div>
+            
         </div>
 
         {/* Employees Date of Birth */}
@@ -338,21 +400,21 @@ export default function EmployeeForm({designations}: {designations: Designation[
         {isMarried && (
         <>
           <div className="mb-4">
-            <label htmlFor="wifeName" className="mb-2 block text-sm font-medium">
-              {"Wife's Name"}
+            <label htmlFor="spouseName" className="mb-2 block text-sm font-medium">
+              {"Spouse's Name"}
             </label>
             <input
-              id="wifeName"
-              name="wifeName"
+              id="spouseName"
+              name="spouseName"
               type="text"
-              placeholder="Enter wife's name"
+              placeholder="Enter spouse's name"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby="wifeName-error"
+              aria-describedby="spouseName-error"
             />
           </div>
-          <div id="wifeName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-              {state.errors?.wifeName &&
-              state.errors.wifeName.map((error: string) => (
+          <div id="spouseName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+              {state.errors?.spouseName &&
+              state.errors.spouseName.map((error: string) => (
                   <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                   </p>
@@ -360,21 +422,21 @@ export default function EmployeeForm({designations}: {designations: Designation[
           </div>
 
           <div className="mb-4">
-            <label htmlFor="wifeCnic" className="mb-2 block text-sm font-medium">
-              {"Wife's CNIC"}
+            <label htmlFor="spouseCnic" className="mb-2 block text-sm font-medium">
+              {"Spouse's CNIC"}
             </label>
             <input
-              id="wifeCnic"
-              name="wifeCnic"
+              id="spouseCnic"
+              name="spouseCnic"
               type="text"
-              placeholder="Enter wife's CNIC in the format XXXXX-XXXXXXX-X"
+              placeholder="Enter spouses's CNIC in the format XXXXX-XXXXXXX-X"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby="wifeCnic-error"
+              aria-describedby="spouseCnic-error"
             />
           </div>
-          <div id="wifeCnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-              {state.errors?.wifeCnic &&
-              state.errors.wifeCnic.map((error: string) => (
+          <div id="spouseCnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+              {state.errors?.spouseCnic &&
+              state.errors.spouseCnic.map((error: string) => (
                   <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                   </p>

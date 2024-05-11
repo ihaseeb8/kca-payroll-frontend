@@ -98,11 +98,32 @@ export type Designation = {
   status: "active" | "inactive"
 }
 
+export type EmployeeChild = {
+  id?: number
+  childName: string
+  dateOfBirth: string
+}
+
 export type Employee = {
   id: number
+  fkDesignationId: number
   name: string
+  gender: "Male" | "Female"
+  fatherName: string
   cnic: string
+  dateOfBirth: string
+  isMarried: 'Yes' | 'No'
+  haveChildren: 'Yes' | 'No'
+  profileImage: string
+  permanentAddress: string
   mobileNumber: string
+  landlineNumber: string
+  employeeChildrenDetails: EmployeeChild[]
+  spouseName: string
+  spouseCnic: string
+  emergencyContactName: string
+  relationOfEmergencyContact: string
+  emergencyContactNumber: string
   emailAddress: string
   status: "active" | "inactive"
 }

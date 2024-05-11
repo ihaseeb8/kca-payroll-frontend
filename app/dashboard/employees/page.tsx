@@ -9,6 +9,7 @@ import { lusitana } from '@/app/ui/fonts';
 export default async function Page({searchParams}: {searchParams : {
     currentPage: string
     pageSize: string
+    id: string
     name: string
     status: string
     cnic: string
@@ -17,7 +18,7 @@ export default async function Page({searchParams}: {searchParams : {
 
     const currentPage = Number(searchParams?.currentPage || 1);
     const pageSize = Number(searchParams?.pageSize || 10);
-
+    const id = Number(searchParams?.id || undefined)
     const name = searchParams?.name || '';
     const status = searchParams?.status || '';
     const cnic = searchParams?.cnic || '';
@@ -37,7 +38,7 @@ export default async function Page({searchParams}: {searchParams : {
                 <CreateEmployee />
             </div>
             <Suspense key={name + currentPage} fallback={<>loading</>}>
-                <EmployeesTable currentPage={currentPage} pageSize={pageSize} name={name} status={status} cnic={cnic} mobileNumber={mobileNumber}/>
+                <EmployeesTable currentPage={currentPage} pageSize={pageSize} id={id} name={name} status={status} cnic={cnic} mobileNumber={mobileNumber}/>
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />

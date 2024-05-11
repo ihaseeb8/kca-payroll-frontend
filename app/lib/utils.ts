@@ -67,3 +67,21 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+
+
+// ------------------------------------------------------------- 
+
+export const avatarFallbackstring = (name: string) => {
+  const words = name.split(' ')
+
+  if (words.length === 1){
+      return words[0][0].toUpperCase()
+  } 
+  else {
+      return (`${words[0][0].toUpperCase()}${words[1][0].toUpperCase()}`)
+  }
+}
+
+export const formattedDOB = (date: string) => {
+  return new Date(date).toLocaleDateString('en-GB', {year: 'numeric', month: '2-digit', day: '2-digit'})
+}

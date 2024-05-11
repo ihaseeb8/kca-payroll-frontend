@@ -15,7 +15,9 @@ const endpoint = process.env.API_URL;
 
 // ------------------------------------- Create Employee
 const EmployeeFormSchema = z.object({
+    id: z.coerce.number().min(1, 'This field is required').max(999999, 'Employee number cannot be longer than 6 characters.'),
     name: z.string().min(1, 'Name is required'),
+    gender: z.enum(["Male", "Female"]),
     dateOfBirth: z.date().refine(date => date <= new Date(), {message: 'Date of Birth cannot be in the future'}),
     cnic: z.string()
       .refine(cnic => /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic), "Missing/Invalid CNIC. Please enter in the format XXXXX-XXXXXXX-X"),
@@ -34,9 +36,9 @@ const EmployeeFormSchema = z.object({
     emergencyContactNumber: z.string()
   })
   
-  const EmployeeWifeSchema = z.object({
-    wifeName: z.string().min(1, 'Name is required'),
-    wifeCnic: z.string()
+  const EmployeeSpouseSchema = z.object({
+    spouseName: z.string().min(1, 'Name is required'),
+    spouseCnic: z.string()
       .refine(cnic => /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic), "Missing/Invalid CNIC. Please enter in the format XXXXX-XXXXXXX-X"),
   })
   
@@ -47,7 +49,9 @@ const EmployeeFormSchema = z.object({
   
   export type EmployeeFormState = {
     errors?: {
+      id?: string[];
       name?: string[];
+      gender?: string[];
       dateOfBirth?: string[];
       cnic?: string[];
       fkDesignationId?: string[];
@@ -58,8 +62,8 @@ const EmployeeFormSchema = z.object({
       landlineNumber?: string[];
       profileImage?: string[];
       isMarried?: string[];
-      wifeCnic?: string[];
-      wifeName?: string[];
+      spouseCnic?: string[];
+      spouseName?: string[];
       haveChildren?: string[];
     };
     message?: string | null;
@@ -70,7 +74,9 @@ const EmployeeFormSchema = z.object({
   
     // validate form fields using Zod
     const validatedFields = EmployeeFormSchema.safeParse({
+      id: formData.get( 'id'),
       name: formData.get('name'),
+      gender: formData.get('gender') || undefined,
       dateOfBirth: new Date(formData.get('dateOfBirth') as string),
       cnic: formData.get('cnic'),
       fatherName: formData.get('fatherName'),
@@ -80,8 +86,8 @@ const EmployeeFormSchema = z.object({
       mobileNumber: formData.get('mobileNumber'),
       landlineNumber: formData.get('landlineNumber'),
       profileImage: formData.get('profileImage'),
-      isMarried: formData.get('isMarried'),
-      haveChildren: formData.get('haveChildren'),
+      isMarried: formData.get('isMarried') || undefined,
+      haveChildren: formData.get('haveChildren') || undefined,
       emergencyContactName: formData.get('emergencyContactName'),
       relationOfEmergencyContact: formData.get('relationOfEmergencyContact'),
       emergencyContactNumber: formData.get('emergencyContactNumber')
@@ -97,9 +103,9 @@ const EmployeeFormSchema = z.object({
     let reqbody: any = {...validatedFields.data}
   
     if(validatedFields.data.isMarried === 'Yes'){
-      const validateWifeFields = EmployeeWifeSchema.safeParse({
-        wifeCnic: formData.get('wifeCnic'),
-        wifeName: formData.get('wifeName')
+      const validateWifeFields = EmployeeSpouseSchema.safeParse({
+        spouseCnic: formData.get('spouseCnic'),
+        spouseName: formData.get('spouseName')
       })
   
       if (!validateWifeFields.success) {
@@ -124,19 +130,23 @@ const EmployeeFormSchema = z.object({
         });
       }
   
-      reqbody["employeeChildren"] = children
+      reqbody["employeeChildren"] = JSON.stringify(children)
     }
-  
+
+    const formdata = new FormData()
+    
+    for(let key in reqbody){
+      formdata.append(key,reqbody[key])
+    }
+    
+    console.log(formdata)
   
     try {
       const response = await fetch(`${endpoint}/api/employees/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(reqbody)
+        body: formdata
       });
-  
+
       const body = await response.json()
       console.log(body)
       
@@ -147,6 +157,7 @@ const EmployeeFormSchema = z.object({
     } catch (error: any) {
       console.log(error.message)
       return {
+        errors: {},
         message: error.message,
       };
     }
@@ -156,6 +167,133 @@ const EmployeeFormSchema = z.object({
     redirect('/dashboard/employees')
   
   }
+
+  export async function updateEmployee(prevState: EmployeeFormState, formData: FormData) {
+    noStore();
+
+    // validate form fields using Zod
+    const validatedFields = EmployeeFormSchema.safeParse({
+      id: formData.get('id'),
+      name: formData.get('name'),
+      gender: formData.get('gender') || undefined,
+      dateOfBirth: new Date(formData.get('dateOfBirth') as string),
+      cnic: formData.get('cnic'),
+      fatherName: formData.get('fatherName'),
+      fkDesignationId: formData.get('fkDesignationId'),
+      emailAddress: formData.get('emailAddress'),
+      permanentAddress: formData.get('permanentAddress'),
+      mobileNumber: formData.get('mobileNumber'),
+      landlineNumber: formData.get('landlineNumber'),
+      profileImage: formData.get('profileImage'),
+      isMarried: formData.get('isMarried') || undefined,
+      haveChildren: formData.get('haveChildren') || undefined,
+      emergencyContactName: formData.get('emergencyContactName'),
+      relationOfEmergencyContact: formData.get('relationOfEmergencyContact'),
+      emergencyContactNumber: formData.get('emergencyContactNumber')
+    })
+  
+    if (!validatedFields.success) {
+      console.log(validatedFields.error.flatten().fieldErrors)
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: 'Missing Fields. Failed to Create Employee.',
+      };
+    }
+  
+    let reqbody: any = {...validatedFields.data}
+  
+    if(validatedFields.data.isMarried === 'Yes'){
+      const validateWifeFields = EmployeeSpouseSchema.safeParse({
+        spouseCnic: formData.get('spouseCnic'),
+        spouseName: formData.get('spouseName')
+      })
+  
+      if (!validateWifeFields.success) {
+        return {
+          errors: validateWifeFields.error.flatten().fieldErrors,
+          message: 'Missing Fields. Failed to Create Employee.',
+        };
+      }
+      
+      reqbody = {...validatedFields.data, ...validateWifeFields.data}
+    }
+  
+    
+  
+    if(validatedFields.data.haveChildren === 'Yes'){
+      // Extract all the children from formData
+      let children = [];
+      for (let i = 0; formData.has(`childName${i}`) && formData.has(`childDateOfBirth${i}`); i++) {
+        children.push({
+          childName: formData.get(`childName${i}`),
+          dateOfBirth: new Date(formData.get(`childDateOfBirth${i}`) as string),
+        });
+      }
+  
+      reqbody["employeeChildren"] = JSON.stringify(children)
+    }
+
+    const formdata = new FormData()
+    
+    for(let key in reqbody){
+      formdata.append(key,reqbody[key])
+    }
+    
+  
+    try {
+      const response = await fetch(`${endpoint}/api/employees/${formdata.get('id')}`, {
+        method: 'PUT',
+        body: formdata
+      });
+
+      const body = await response.json()
+      console.log(body)
+      
+      if (!response.ok) {
+        throw new Error(`${body?.message}`);
+      }
+  
+    } catch (error: any) {
+      console.log(error.message)
+      return {
+        errors: {},
+        message: error.message,
+      };
+    }
+  
+    // Revalidate the cache for the invoices page and redirect the user.
+    revalidatePath('/dashboard/employees');
+    redirect('/dashboard/employees')
+  
+  }
+
+  export async function deactivateEmployee(id: number){
+    noStore(); 
+
+    try{
+      const response = await fetch(`${endpoint}/api/employees/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+      const body = await response.json()
+
+      if(!response.ok){
+        throw new Error(`Database Error: ${body?.message}`);
+      }
+
+      revalidatePath('/dashboard/designations')
+      return {message: "Designation Deactivated Successfully"}
+
+    } catch( error : Error | any ) {
+      console.error(error)
+      return { message: error.message}
+    }
+    
+  }
+
 
 
   // ---------------------------------- Data Fetching --------------------------------------
@@ -183,15 +321,18 @@ const EmployeeFormSchema = z.object({
 
   }
 
-  export async function fetchEmployees(pageSize: number = 10, currentPage: number = 1, name: string = '' , cnic: string = '', mobileNumber: string = '' , status = ''){
+  export async function fetchEmployees(pageSize: number = 10, currentPage: number = 1, id: number | undefined, name: string = '' , cnic: string = '', mobileNumber: string = '' , status = ''){
     noStore();
 
     let endpointWithQuery = `${endpoint}/api/employees?pageSize=${pageSize}&currentPage=${currentPage}`;
 
+    if (id) endpointWithQuery += `&id=${id}`
     if (name) endpointWithQuery += `&name=${name}`
     if (cnic) endpointWithQuery += `&cnic=${cnic}`
     if (mobileNumber) endpointWithQuery += `&mobileNumber=${mobileNumber}`
     if (status) endpointWithQuery += `&status=${status}`
+
+    // console.log(endpointWithQuery)
     
     try{
         const response = await fetch(endpointWithQuery)
@@ -207,4 +348,20 @@ const EmployeeFormSchema = z.object({
 
   }
 
+  export async function fetchEmployee(id: number){
+    noStore();
+
+    try{
+
+      const response = await fetch(`${endpoint}/api/employees/${id}`)
+
+      const body = await response.json()
+
+      return(body?.data || undefined)
+
+    } catch(e){
+      console.error(e)
+      throw new Error('Failed to fetch Employee')
+    }
+  }
   

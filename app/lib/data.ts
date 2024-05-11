@@ -337,9 +337,7 @@ export async function getDesignation(id: number){
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    if(body?.data){
-      return body.data
-    } 
+    return(body?.data || undefined)
 
   } catch (error){
     console.error(error)
