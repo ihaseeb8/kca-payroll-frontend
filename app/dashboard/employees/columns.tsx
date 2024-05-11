@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Employee } from "@/app/lib/definitions"
-import {MoreHorizontal, BadgeCheckIcon, Badge} from "lucide-react"
+import {MoreHorizontal, BadgeCheckIcon, Badge, BadgeXIcon} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,8 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { DeactivateDesignation, UpdateDesination } from "@/app/ui/designations/buttons"
 
+import { View, Edit, Deactivate } from "@/app/ui/employees/buttons"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -50,9 +50,55 @@ export const columns: ColumnDef<Employee>[] = [
     header: "Status",
     cell: ({row}) => {
       const status = row.getValue('status')
-      const icon = status === 'active' ? <BadgeCheckIcon className="text-green-600"/> : <Badge />;
+      const icon = status === 'active' ? <BadgeCheckIcon className="text-green-600"/> : <BadgeXIcon className="text-red-500"/>;
       return <>{icon}</>
     },
   },
-  
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const employee = row.original
+ 
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+            <DropdownMenuItem>
+              <View id={employee.id}/>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>
+              <Edit id={employee.id}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem disabled={employee.status === 'inactive'}>
+              <Deactivate id={employee.id}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(String(employee.id))}
+            >
+              Copy ID
+            </DropdownMenuItem>
+            
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
+  },
+
 ]

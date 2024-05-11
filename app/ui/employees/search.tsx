@@ -18,6 +18,7 @@ export default function Search() {
   const router = useRouter();
   const [filters, setFilters] = useState<{ [key: string]: boolean }>({
     name: true,
+    id: false,
     cnic: false,
     mobileNumber: false,
   });
@@ -80,6 +81,12 @@ export default function Search() {
                 Name
               </Label>
               <Checkbox id="name" checked={filters.name} onCheckedChange={(e: boolean)=>{setFilters({ ...filters, ["name"]: e })}}/>
+            </div>
+            <div className="flex justify-between align-middle">
+              <Label className="text-sm font-medium" htmlFor="id">
+                Employee No/ID
+              </Label>
+              <Checkbox id="id" checked={filters.id} onCheckedChange={(e: boolean)=>{setFilters({ ...filters, ["id"]: e })}}/>
             </div>
             <div className="flex justify-between align-middle">
               <Label className="text-sm font-medium" htmlFor="filter-cnic">

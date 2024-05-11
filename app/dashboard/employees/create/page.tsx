@@ -5,7 +5,7 @@ import { fetchActiveDesignations } from '@/app/lib/data';
 export default async function Page() {
 
   const designations = await fetchActiveDesignations(1000,1)
-  console.log(designations)
+  // console.log(designations)
  
   return (
     <main>
