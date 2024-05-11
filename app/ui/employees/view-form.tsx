@@ -43,7 +43,7 @@ export default function EmployeeInformation({employee}: {employee: Employee}){
                         <p>{employee.cnic}</p>
                         </div>
                         <div>
-                        <Label htmlFor="father-name" className="font-bold">Father's Name</Label>
+                        <Label htmlFor="father-name" className="font-bold">{"Father's Name"}</Label>
                         <p>{employee.fatherName}</p>
                         </div>
                         <div>

@@ -34,7 +34,7 @@ import { CalendarDaysIcon, XIcon } from "lucide-react";
 
 // ... other imports ...
 
-export default function 
+export default function EditForm
 ({
     employee,
     designations
@@ -88,7 +88,7 @@ export default function
       <div className="mx-auto max-w-8xl space-y-6">
 
         <div className="space-y-2">
-          <p className="text-gray-500 dark:text-gray-400">Update the employee's personal and professional details.</p>
+          <p className="text-gray-500 dark:text-gray-400">{"Update the employee's personal and professional details."}</p>
         </div>
 
         <Card>
@@ -147,7 +147,7 @@ export default function
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="fatherName">Father's Name</Label>
+              <Label htmlFor="fatherName">{"Father's Name"}</Label>
               <Input id="fatherName" name="fatherName" placeholder="Enter father's name" defaultValue={employee.fatherName}/>
             </div>
 
