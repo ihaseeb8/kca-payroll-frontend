@@ -47,3 +47,13 @@ export function Deactivate({id}: {id :number}){
     )
 }
 
+export function AddBankAccount({id}: {id :number}){
+    return(
+        <Link 
+            href={`/dashboard/employees/${id}/addBank`}
+            className='w-full'
+        >
+            Add Bank Account
+        </Link>
+    )
+}

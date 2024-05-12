@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-import { View, Edit, Deactivate } from "@/app/ui/employees/buttons"
+import { View, Edit, Deactivate, AddBankAccount } from "@/app/ui/employees/buttons"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -85,6 +85,10 @@ export const columns: ColumnDef<Employee>[] = [
 
             <DropdownMenuItem disabled={employee.status === 'inactive'}>
               <Deactivate id={employee.id}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <AddBankAccount id={employee.id}/>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

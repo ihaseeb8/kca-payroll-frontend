@@ -16,7 +16,7 @@ const endpoint = process.env.API_URL;
 // ------------------------------------- Create Bank Details
 const BankDetailsFormSchema = z.object({
     bankName: z.string().min(1, "Bank Name is required"),
-    accountNumber: z.string().min(1, "Account Number is required"),
+    accountNumber: z.string().length(24, "Account Number is required and should be of 24 Digits"),
     fkEmployeeId: z.string(),
 })
 
@@ -24,54 +24,55 @@ export type BankDetailsFormState = {
     errors?: {
         bankName?: string[];
         accountNumber?: string[];
-        fkEmployeeId? : string[];
+        fkEmployeeId?: string[];
     };
     message?: string | null;
 };
 
-// export async function CreateRigLocation(prevState: RigLocationFormState, formData: FormData) {
-//     noStore();
+export async function addBankAccount(id: number, prevState: BankDetailsFormState, formData: FormData) {
+    noStore();
 
-//     // validate form fields using Zod
-//     const validatedFields = RigLocationFormSchema.safeParse({
-//         rigBase: formData.get('rigBase'),
-//         rigBaseOffice: formData.get('rigBaseOffice'),
-//     })
+    // validate form fields using Zod
+    const validatedFields = BankDetailsFormSchema.safeParse({
+        bankName: formData.get('bankName'),
+        accountNumber: formData.get('accountNumber'),
+        fkEmployeeId: id.toString()
+    })
 
-//     if (!validatedFields.success) {
-//         return {
-//             errors: validatedFields.error.flatten().fieldErrors,
-//             message: 'Missing Fields. Failed to Create Rig Location.',
-//         };
-//     }
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Add Bank Account.',
+        };
+    }
 
-//     try {
-//         const response = await fetch(`${endpoint}/api/rigLocation/`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(validatedFields.data)
-//         });
+    try {
+        const response = await fetch(`${endpoint}/api/bankDetails/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(validatedFields.data)
+        });
 
-//         const body = await response.json()
+        const body = await response.json()
 
-//         if (!response.ok) {
-//             throw new Error(`${body?.message}`);
-//         }
+        if (!response.ok) {
+            throw new Error(`${body?.message}`);
+        }
 
-//     } catch (error: any) {
-//         console.log(error.message)
-//         return {
-//             message: error.message,
-//         };
-//     }
+    } catch (error: any) {
+        console.log(error.message)
+        return {
+            message: error.message,
+        };
+    }
 
-//     // Revalidate the cache for the invoices page and redirect the user.
-//     revalidatePath('/dashboard/rigs');
-//     redirect('/dashboard/rigs')
+    // Revalidate the cache for the invoices page and redirect the user.
+    revalidatePath('/dashboard/employees');
+    redirect('/dashboard/employees')
 
-// }
+}
 
 // ---------------------------------- Total Pages Fetching --------------------------------------
 export async function fetchBankDetailsPages(pageSize: number = 10, query: string) {
@@ -96,7 +97,7 @@ export async function fetchBankDetailsPages(pageSize: number = 10, query: string
     } catch (error) {
 
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch Rig Location pages.');
+        throw new Error('Failed to fetch Bank Details pages.');
 
     }
 }
@@ -147,29 +148,29 @@ export async function getBankDetail(id: number) {
     }
 }
 
-export async function fetchActiveBankDetails(pageSize: number = 10, currentPage: number = 1){
+export async function fetchActiveBankDetails(pageSize: number = 10, currentPage: number = 1) {
     noStore();
-  
-    try{
-      const response = await fetch(`${endpoint}/api/bankDetails?currentPage=${currentPage}&pageSize=${pageSize}&status=active`)
-  
-      if(!response.ok){
-        throw new Error(`Failed to fetch data, status: ${response.status}`)
-      }
-      const object = await response.json();
-  
-      if(object?.data?.bankDetails){
-        return object.data.bankDetails
-      } else {
-        return [];
-      }
-  
+
+    try {
+        const response = await fetch(`${endpoint}/api/bankDetails?currentPage=${currentPage}&pageSize=${pageSize}&status=active`)
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data, status: ${response.status}`)
+        }
+        const object = await response.json();
+
+        if (object?.data?.bankDetails) {
+            return object.data.bankDetails
+        } else {
+            return [];
+        }
+
     } catch (error) {
-      console.error(error);
-      throw new Error('Failed to fetch designation table. error');
+        console.error(error);
+        throw new Error('Failed to fetch designation table. error');
     }
-  
-  }
+
+}
 
 export async function updateBankDetails(id: number, prevState: BankDetailsFormState, formData: FormData) {
     noStore();
@@ -178,7 +179,7 @@ export async function updateBankDetails(id: number, prevState: BankDetailsFormSt
     const validatedFields = BankDetailsFormSchema.safeParse({
         bankName: formData.get('bankName'),
         accountNumber: formData.get('accountNumber'),
-        fkEmployeeId: formData.get('fkEmployeeId')
+        fkEmployeeId: Number(formData.get('fkEmployeeId'))
     })
 
     if (!validatedFields.success) {
@@ -220,29 +221,29 @@ export async function updateBankDetails(id: number, prevState: BankDetailsFormSt
 export async function deactivateBankDetails(id: number) {
     noStore();
 
-    try{
-      const response = await fetch(`${endpoint}/api/bankDetails/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
+    try {
+        const response = await fetch(`${endpoint}/api/bankDetails/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
 
-      const body = await response.json()
+        const body = await response.json()
 
-      if(!response.ok){
-        throw new Error(`Database Error: ${body?.message}`);
-      }
+        if (!response.ok) {
+            throw new Error(`Database Error: ${body?.message}`);
+        }
 
-      revalidatePath('/dashboard/banks')
-      return {message: "Bank Details Deactivated Successfully"}
+        revalidatePath('/dashboard/banks')
+        return { message: "Bank Details Deactivated Successfully" }
 
-    } catch( error : Error | any ) {
-      console.error(error)
-      return { message: error.message}
+    } catch (error: Error | any) {
+        console.error(error)
+        return { message: error.message }
     }
 
-  }
+}
 
 
 
