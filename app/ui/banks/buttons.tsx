@@ -11,7 +11,7 @@ export function DeactivateBankDetails({ id }: { id: number }){
   const deactivateBankDetailswithId = deactivateBankDetails.bind(null, id);
   return(
     <form action={deactivateBankDetailswithId}>
-        <button>Deactivate Bank Account</button>
+        <button>Deactivate</button>
     </form>
   )
 }
@@ -21,7 +21,7 @@ export function UpdateBankDetails({id}: {id: number}){
     <Link
       href={`/dashboard/banks/${id}/edit`}
     >
-      Edit Bank Details
+      Edit
     </Link>
   )
 }

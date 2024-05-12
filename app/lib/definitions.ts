@@ -141,4 +141,11 @@ export type BankDetails = {
   accountNumber: string
   fkEmployeeId: number
   bankStatus: "active" | "inactive"
+  bankUser: AccountHolder
+}
+
+export type AccountHolder = {
+  id: number
+  name: string
+  cnic: string
 }

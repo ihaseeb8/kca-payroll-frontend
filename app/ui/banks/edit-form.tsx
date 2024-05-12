@@ -20,6 +20,8 @@ export default function Form({
     bankDetail: BankDetails
 }) {
 
+  console.log(bankDetail)
+
   const id = bankDetail.id
   const initialState = { message: null, errors: {} };
 
@@ -31,7 +33,68 @@ export default function Form({
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Rig Base */}
+
+ {/* Account Holder Number*/}
+
+ <div className="mb-4">
+          <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
+            Employee Number
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="fkEmployeeId"
+                name="fkEmployeeId"
+                type="text"
+                readOnly
+                defaultValue={bankDetail.fkEmployeeId}
+                placeholder="Enter Account Number"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
+                aria-describedby='fkEmployeeId-error'
+              />
+            </div>
+          </div>
+        </div>
+        <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            {state.errors?.fkEmployeeId &&
+            state.errors.fkEmployeeId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+                </p>
+            ))}
+        </div>
+
+ {/* Account Holder Name*/}
+        <div className="mb-4">
+          <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
+            Employee Name
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="fkEmployeeId"
+                name="fkEmployeeId"
+                type="text"
+                readOnly
+                defaultValue={bankDetail.bankUser.name}
+                placeholder="Enter Account Number"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
+                aria-describedby='fkEmployeeId-error'
+              />
+            </div>
+          </div>
+        </div>
+        <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            {state.errors?.fkEmployeeId &&
+            state.errors.fkEmployeeId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+                </p>
+            ))}
+        </div>
+
+
+        {/* Bank Name */}
         <div className="mb-4">
           <label htmlFor="bankName" className="mb-2 block text-sm font-medium">
             Bank Name
@@ -87,41 +150,6 @@ export default function Form({
                 </p>
             ))}
         </div>
-
- {/* Account Holder */}
-
- <div className="mb-4">
-          <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
-            Employee Number
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="fkEmployeeId"
-                name="fkEmployeeId"
-                type="text"
-                defaultValue={bankDetail.fkEmployeeId}
-                placeholder="Enter Account Number"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby='fkEmployeeId-error'
-              />
-            </div>
-          </div>
-        </div>
-        <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.fkEmployeeId &&
-            state.errors.fkEmployeeId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-
-
-
-
-
 
         <div id="form-response" aria-live="polite" aria-atomic="true" className='mb-4 md:flex justify-center'>
             {state.message && (

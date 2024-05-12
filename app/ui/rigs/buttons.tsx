@@ -35,7 +35,7 @@ export function DeactivateRigLocation({ id, rigStatus }: { id: number, rigStatus
     return (
       <form onSubmit={deactivateRigLocationwithId}>
         <button type="submit">
-          {currentStatus === 'active' ? 'Deactivate Rig Location' : 'Activate Rig Location'}
+          {currentStatus === 'active' ? 'Deactivate' : 'Activate'}
         </button>
       </form>
     );
@@ -46,7 +46,7 @@ export function UpdateRigLocation({id}: {id: number}){
     <Link
       href={`/dashboard/rigs/${id}/edit`}
     >
-      Edit Rig Location
+      Edit
     </Link>
   )
 }

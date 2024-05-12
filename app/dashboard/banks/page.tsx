@@ -1,4 +1,3 @@
-import { columns } from "./columns"
 import { DataTable } from "../../ui/data-table"
 import { Designation } from "@/app/lib/definitions"
 import { lusitana } from '@/app/ui/fonts';
