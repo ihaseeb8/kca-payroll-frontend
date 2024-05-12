@@ -20,16 +20,20 @@ import { DeactivateBankDetails, UpdateBankDetails } from "@/app/ui/banks/buttons
 // You can use a Zod schema here if you want.
 export const columns: ColumnDef<BankDetails>[] = [
   {
-    accessorKey: "bankName",
-    header: "Bank Name",
-  },
-  {
-    accessorKey: "accountNumber",
-    header: "Account Number",
+    accessorKey: "bankUser.id",
+    header: "ID",
   },
   {
     accessorKey: "bankUser.name",
-    header: "Account Holder",
+    header: "Name",
+  },
+  {
+    accessorKey: "bankName",
+    header: "Bank",
+  },
+  {
+    accessorKey: "accountNumber",
+    header: "IBAN",
   },
   {
     accessorKey: "bankStatus",

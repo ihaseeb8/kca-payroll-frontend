@@ -21,7 +21,7 @@ export function DeactivateDesignation({ id }: { id: number }){
   const deactivateDesignationwithId = deactivateDesignation.bind(null, id);
   return(
     <form action={deactivateDesignationwithId}>
-        <button>Deactivate designation</button>
+        <button>Deactivate</button>
     </form>
   )
 }
@@ -31,7 +31,7 @@ export function UpdateDesination({id}: {id: number}){
     <Link
       href={`/dashboard/designations/${id}/edit`}
     >
-      Edit Designation
+      Edit
     </Link>
   )
 }

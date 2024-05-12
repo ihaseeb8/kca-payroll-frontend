@@ -20,7 +20,7 @@ export default function Form({
     bankDetail: BankDetails
 }) {
 
- // console.log(bankDetail.bankUser)
+  console.log(bankDetail)
 
   const id = bankDetail.id
   const initialState = { message: null, errors: {} };
@@ -46,7 +46,7 @@ export default function Form({
                 id="fkEmployeeId"
                 name="fkEmployeeId"
                 type="text"
-                disabled={true}
+                readOnly
                 defaultValue={bankDetail.fkEmployeeId}
                 placeholder="Enter Account Number"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
@@ -64,7 +64,34 @@ export default function Form({
             ))}
         </div>
 
- 
+ {/* Account Holder Name*/}
+        <div className="mb-4">
+          <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
+            Employee Name
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="fkEmployeeId"
+                name="fkEmployeeId"
+                type="text"
+                readOnly
+                defaultValue={bankDetail.bankUser.name}
+                placeholder="Enter Account Number"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
+                aria-describedby='fkEmployeeId-error'
+              />
+            </div>
+          </div>
+        </div>
+        <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            {state.errors?.fkEmployeeId &&
+            state.errors.fkEmployeeId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+                </p>
+            ))}
+        </div>
 
 
         {/* Bank Name */}
