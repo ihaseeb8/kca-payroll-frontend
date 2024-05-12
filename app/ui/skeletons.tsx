@@ -275,3 +275,96 @@ export function DesignationTableSkeleton() {
     </div>
   )
 }
+
+// ------------------------------ Skeleton For Rig Locations ----------------
+
+export function RigsRowsSkeleton() {
+  return (
+  <TableRow>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+</TableRow>
+)
+}
+
+export function RigsTableSkeleton() {
+
+  return (
+    
+    <div className="rounded-md border mt-4">
+      <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Rig Base</TableHead>
+          <TableHead>Rig Base Office</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>...</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+        <RigsRowsSkeleton />
+      </TableBody>
+    </Table>      
+
+    </div>
+  )
+}
+
+// ---------------------------- Skeleton For Bank Details --------------
+
+export function BankRowsSkeleton() {
+  return (
+  <TableRow>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+</TableRow>
+)
+}
+
+export function BankTableSkeleton() {
+
+  return (
+    
+    <div className="rounded-md border mt-4">
+      <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Bank Name</TableHead>
+          <TableHead>Account Number</TableHead>
+          <TableHead>Account Holder</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>...</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+        <BankRowsSkeleton />
+      </TableBody>
+    </Table>      
+
+    </div>
+  )
+}

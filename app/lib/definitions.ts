@@ -127,3 +127,18 @@ export type Employee = {
   emailAddress: string
   status: "active" | "inactive"
 }
+
+export type RigLocation = {
+  id: number
+  rigBase: string
+  rigBaseOffice: string
+  rigStatus: "active" | "inactive"
+}
+
+export type BankDetails = {
+  id: number
+  bankName: string
+  accountNumber: string
+  fkEmployeeId: number
+  bankStatus: "active" | "inactive"
+}
