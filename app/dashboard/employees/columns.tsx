@@ -23,7 +23,7 @@ import { View, Edit, Deactivate, AddBankAccount } from "@/app/ui/employees/butto
 export const columns: ColumnDef<Employee>[] = [
   {
     accessorKey: 'id',
-    header: 'ID'
+    header: 'ID',
   },
   {
     accessorKey: "name",
@@ -50,12 +50,13 @@ export const columns: ColumnDef<Employee>[] = [
     header: "Status",
     cell: ({row}) => {
       const status = row.getValue('status')
-      const icon = status === 'active' ? <BadgeCheckIcon className="text-green-600"/> : <BadgeXIcon className="text-red-500"/>;
+      const icon = status === 'active' ? <BadgeCheckIcon className="text-success"/> : <BadgeXIcon className="text-destructive"/>;
       return <>{icon}</>
     },
   },
   {
     id: "actions",
+    size: 2,
     cell: ({ row }) => {
       const employee = row.original
  

@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { RigLocation } from "@/app/lib/definitions"
-import {MoreHorizontal, BadgeCheckIcon, Badge} from "lucide-react"
+import {MoreHorizontal, BadgeCheckIcon, Badge, BadgeXIcon} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { DeactivateRigLocation, UpdateRigLocation } from "@/app/ui/rigs/buttons"
+import { ToggleStatus, UpdateRigLocation } from "@/app/ui/rigs/buttons"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -23,28 +23,27 @@ import { DeactivateRigLocation, UpdateRigLocation } from "@/app/ui/rigs/buttons"
  export const columns: ColumnDef<RigLocation>[] = [
   {
     accessorKey: "rigBase",
-    header: "Rig Base",
+    header: "Base",
   },
   {
     accessorKey: "rigBaseOffice",
-    header: "Rig Base Office",
+    header: "Office",
   },
   {
     accessorKey: "rigStatus",
     header: "Status",
     cell: ({row}) => {
       const status = row.getValue('rigStatus')
-      const icon = status === 'active' ? <BadgeCheckIcon className="text-green-600"/> : <Badge />;
+      const icon = status === 'active' ? <BadgeCheckIcon className="text-success"/> : <BadgeXIcon className="text-destructive" />;
       return <>{icon}</>
     }
   },
   {
     id: "actions",
+    size: 2,
     cell: ({ row }) => {
-      const rigLocation = row.original
+      const rigLocation = row.original 
 
-      
- 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -55,19 +54,26 @@ import { DeactivateRigLocation, UpdateRigLocation } from "@/app/ui/rigs/buttons"
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(String(rigLocation.id))}
-            >
-              Copy Rig Location ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            
-            <DropdownMenuItem>
-              <DeactivateRigLocation id={rigLocation.id} rigStatus={rigLocation.rigStatus}/>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
+
+            <DropdownMenuItem className="p-0">
               <UpdateRigLocation id={rigLocation.id}/>
             </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="p-0">
+              <ToggleStatus id={rigLocation.id} status={rigLocation.rigStatus}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(String(rigLocation.id))}
+              className="cursor-pointer"
+            >
+              Copy Rig ID
+            </DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       )

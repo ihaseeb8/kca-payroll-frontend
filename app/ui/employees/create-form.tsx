@@ -9,7 +9,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
-import { Button } from '@/app/ui/button';
+import { Button } from '@/components/ui/button';
 import { createEmployee } from "@/app/lib/actions/employees";
 import { Designation } from "@/app/lib/definitions";
 
@@ -586,14 +586,17 @@ export default function EmployeeForm({designations}: {designations: Designation[
         </div>
         
       </div>
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/employees"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Cancel
-        </Link>
-        <Button type="submit">Create Employee</Button>
+      <div className="mt-6 flex justify-center gap-4">
+        <Button asChild variant={'outline'}>
+          <Link
+            href="/dashboard/employees"
+            className="flex h-10 items-center rounded-lg px-4 text-sm font-medium transition-colors"
+          >
+            Cancel
+          </Link>
+        </Button>
+
+        <Button type="submit">Create</Button>
       </div>
     </form>
   );

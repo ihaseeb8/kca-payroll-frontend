@@ -9,7 +9,7 @@ export default async function Page() {
         breadcrumbs={[
           { label: 'Rig Locations', href: '/dashboard/rigs' },
           {
-            label: 'Create Rig Location',
+            label: 'Create',
             href: '/dashboard/rigs/create',
             active: true,
           },

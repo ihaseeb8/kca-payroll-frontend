@@ -2,31 +2,34 @@
 
 import {
   UserGroupIcon,
-  HomeIcon,
   DocumentDuplicateIcon,
   BuildingLibraryIcon,
   IdentificationIcon,
   MapPinIcon
 
 } from '@heroicons/react/24/outline';
+
+import { HomeIcon, UsersIcon, BriefcaseBusiness, MapPinned, Landmark } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { Button } from '@/components/ui/button';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Banks', href: '/dashboard/banks', icon: BuildingLibraryIcon},
-  { name: 'Designations', href: '/dashboard/designations', icon: IdentificationIcon},
-  { name: 'Employees', href: '/dashboard/employees', icon: IdentificationIcon},
-  { name: 'Rig Locations', href: '/dashboard/rigs', icon: MapPinIcon}
+  { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon},
+  { name: 'Designations', href: '/dashboard/designations', icon: BriefcaseBusiness},
+  { name: 'Rig Locations', href: '/dashboard/rigs', icon: MapPinned},
+  // {
+  //   name: 'Invoices',
+  //   href: '/dashboard/invoices',
+  //   icon: DocumentDuplicateIcon,
+  // },
+  // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  { name: 'Bank Accounts', href: '/dashboard/banks', icon: Landmark},
+
 ];
 
 export default function NavLinks() {
@@ -37,17 +40,24 @@ export default function NavLinks() {
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <Link
-            key={link.name}
-            href={link.href}
+          <Button 
+            asChild
+            key={link.name} 
+            variant={'secondary'} 
+            color='black'
             className={clsx(
-              "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
-              {'bg-sky-100 text-blue-600': pathname === link.href}
-            )}
-          >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
+            "flex h-[48px] grow items-center hover:bg-slate-300 justify-center gap-2 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3",
+            {'bg-slate-300 text-black': pathname === link.href}
+          )}>
+            <Link
+              key={link.name}
+              href={link.href}
+            >
+              <LinkIcon className="w-6" />
+              <p className="hidden md:block">{link.name}</p>
+            </Link>
+          </Button>
+          
         );
       })}
     </>

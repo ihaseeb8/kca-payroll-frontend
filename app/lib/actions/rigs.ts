@@ -209,11 +209,8 @@ export async function getRigLocation(id: number) {
 
 //   }
 
-export async function deactivateRigLocation(id: number, rigStatus: string) {
+export async function toggleStatus(id: number, status: string) {
     noStore();
-
-    const formData = new FormData();
-    formData.append('rigStatus', rigStatus);
 
     try {
         const response = await fetch(`${endpoint}/api/rigLocation/${id}`, {
@@ -221,10 +218,13 @@ export async function deactivateRigLocation(id: number, rigStatus: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ rigStatus })
+            body: JSON.stringify({ "rigStatus": status })
         });
 
         const body = await response.json();
+
+        console.log(status)
+        console.log(body)
 
         if (!response.ok) {
             throw new Error(`Database Error: ${body?.message}`);

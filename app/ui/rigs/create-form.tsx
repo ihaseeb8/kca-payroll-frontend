@@ -7,11 +7,11 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
-import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/app/lib/actions';
 import { CreateRigLocation } from '@/app/lib/actions/rigs';
 import { useFormState } from 'react-dom';
 import clsx from 'clsx';
+import { Button } from '@/components/ui/button';
 
 export default function Form() {
 
@@ -87,14 +87,17 @@ export default function Form() {
         </div>
         
       </div>
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/rigs"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Cancel
-        </Link>
-        <Button type="submit">Create Rig Location</Button>
+      <div className="mt-6 flex justify-center gap-4">
+        <Button asChild variant={'outline'}>
+          <Link
+            href="/dashboard/rigs"
+            className="flex h-10 items-center rounded-lg px-4 text-sm font-medium transition-colors"
+          >
+            Cancel
+          </Link>
+        </Button>
+
+        <Button type="submit">Create</Button>
       </div>
     </form>
   );
