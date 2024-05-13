@@ -217,6 +217,7 @@ export function InvoicesTableSkeleton() {
   );
 }
 
+
 // ------------------------------------------ My Own Skeletons -----------------------------
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -229,6 +230,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
+export function PaginationSkeleton() {
+  return(
+    <div className="inline-flex gap-3">
+      <Skeleton className="w-10 h-10" />
+
+      <div className="flex -space-x-px">
+        <Skeleton className="w-10 h-10" />
+      </div>
+
+      <Skeleton className="w-10 h-10" />
+    </div>
+  )
+}
 
 export function DesignationRowSkeleton() {
 
@@ -247,7 +262,7 @@ export function DesignationTableSkeleton() {
 
   return (
     
-    <div className="rounded-md border mt-4">
+    <div className="rounded-md border mt-6">
       <Table>
       <TableHeader>
         <TableRow>
@@ -255,7 +270,7 @@ export function DesignationTableSkeleton() {
           <TableHead>Short Name</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>...</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -281,12 +296,11 @@ export function DesignationTableSkeleton() {
 export function RigsRowsSkeleton() {
   return (
   <TableRow>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-</TableRow>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  </TableRow>
 )
 }
 
@@ -294,14 +308,14 @@ export function RigsTableSkeleton() {
 
   return (
     
-    <div className="rounded-md border mt-4">
+    <div className="rounded-md border mt-6">
       <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Rig Base</TableHead>
-          <TableHead>Rig Base Office</TableHead>
+          <TableHead>Base</TableHead>
+          <TableHead>Office</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>...</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -327,12 +341,13 @@ export function RigsTableSkeleton() {
 export function BankRowsSkeleton() {
   return (
   <TableRow>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-  <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
-</TableRow>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+  </TableRow>
 )
 }
 
@@ -340,15 +355,16 @@ export function BankTableSkeleton() {
 
   return (
     
-    <div className="rounded-md border mt-4">
+    <div className="rounded-md border mt-6">
       <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Bank Name</TableHead>
-          <TableHead>Account Number</TableHead>
-          <TableHead>Account Holder</TableHead>
+          <TableHead>ID</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Bank</TableHead>
+          <TableHead>IBAN</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>...</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -362,6 +378,60 @@ export function BankTableSkeleton() {
         <BankRowsSkeleton />
         <BankRowsSkeleton />
         <BankRowsSkeleton />
+      </TableBody>
+    </Table>      
+
+    </div>
+  )
+}
+
+
+// ------------------------------------- SKeletons for employee -----------------------------------------------
+export function EmployeeRowSkeleton() {
+
+  return(
+    <TableRow>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    </TableRow>
+  )
+}
+
+export function EmployeesTableSkeleton() {
+
+  return (
+    
+    <div className="rounded-md border mt-6">
+      <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>ID</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Designation</TableHead>
+          <TableHead>Mobile No</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>CNIC</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
+        <EmployeeRowSkeleton />
       </TableBody>
     </Table>      
 

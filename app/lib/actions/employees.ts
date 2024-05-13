@@ -338,7 +338,7 @@ const EmployeeFormSchema = z.object({
         const response = await fetch(endpointWithQuery)
 
         const body = await response.json();
-
+        
         return (body?.data?.employees || [])
 
     } catch (e){

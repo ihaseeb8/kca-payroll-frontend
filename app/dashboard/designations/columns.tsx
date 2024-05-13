@@ -44,6 +44,7 @@ export const columns: ColumnDef<Designation>[] = [
   },
   {
     id: "actions",
+    size: 2,
     cell: ({ row }) => {
       const designation = row.original
  

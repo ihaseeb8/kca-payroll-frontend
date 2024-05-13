@@ -24,6 +24,10 @@ export default async function Page({
   const currentPage = Number(searchParams?.currentPage) || 1;
   const pageSize = Number(searchParams?.pageSize) || 10;
 
+//   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// // Use it like this
+//   await delay(4000); // delay for 1 second
   const totalPages = await fetchRigLocationPages(pageSize, query);
 
   return (

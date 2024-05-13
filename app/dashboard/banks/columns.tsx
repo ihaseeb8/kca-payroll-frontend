@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { BankDetails } from "@/app/lib/definitions"
-import { MoreHorizontal, BadgeCheckIcon, Badge } from "lucide-react"
+import { MoreHorizontal, BadgeCheckIcon, BadgeXIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -40,16 +40,15 @@ export const columns: ColumnDef<BankDetails>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.getValue('bankStatus')
-      const icon = status === 'active' ? <BadgeCheckIcon className="text-green-600" /> : <Badge />;
+      const icon = status === 'active' ? <BadgeCheckIcon className="text-success" /> : <BadgeXIcon className="text-destructive" />;
       return <>{icon} </>
     }
   },
   {
     id: "actions",
+    size: 2,
     cell: ({ row }) => {
       const bank = row.original
-
-
 
       return (
         <DropdownMenu>
@@ -61,19 +60,25 @@ export const columns: ColumnDef<BankDetails>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(String(bank.id))}
-            >
-              Copy Bank ID
+
+            <DropdownMenuItem>
+              <UpdateBankDetails id={bank.id} />
             </DropdownMenuItem>
+
             <DropdownMenuSeparator />
 
             <DropdownMenuItem>
               <DeactivateBankDetails id={bank.id} />
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <UpdateBankDetails id={bank.id} />
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(String(bank.accountNumber))}
+            >
+              Copy IBAN
             </DropdownMenuItem>
+            
           </DropdownMenuContent>
         </DropdownMenu>
       )

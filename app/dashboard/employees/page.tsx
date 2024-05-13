@@ -2,6 +2,7 @@ import { CreateEmployee } from "@/app/ui/employees/buttons"
 import Pagination from "@/app/ui/invoices/pagination"
 import { fetchEmployeesPages } from "@/app/lib/actions/employees"
 import EmployeesTable from "@/app/ui/employees/table"
+import { EmployeesTableSkeleton } from "@/app/ui/skeletons"
 import Search from "@/app/ui/employees/search"
 import { Suspense } from "react"
 import { lusitana } from '@/app/ui/fonts';
@@ -23,7 +24,7 @@ export default async function Page({searchParams}: {searchParams : {
     const status = searchParams?.status || '';
     const cnic = searchParams?.cnic || '';
     const mobileNumber = searchParams?.mobileNumber || '';
-    
+
     const totalPages = await fetchEmployeesPages(pageSize,name,cnic,mobileNumber,status);
     
     return(
@@ -37,7 +38,7 @@ export default async function Page({searchParams}: {searchParams : {
                 <Search />
                 <CreateEmployee />
             </div>
-            <Suspense key={name + currentPage} fallback={<>loading</>}>
+            <Suspense key={name + currentPage + pageSize + id + status + cnic + mobileNumber} fallback={<EmployeesTableSkeleton />}>
                 <EmployeesTable currentPage={currentPage} pageSize={pageSize} id={id} name={name} status={status} cnic={cnic} mobileNumber={mobileNumber}/>
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
