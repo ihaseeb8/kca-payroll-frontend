@@ -6,7 +6,7 @@ export default function Loading(){
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
-                <h1 className={`${lusitana.className} text-2xl`}>Designations</h1>
+                <h1 className={`${lusitana.className} text-2xl`}>Employees</h1>
             </div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <div className="relative flex flex-1 flex-shrink-0 gap-2 w-full">
