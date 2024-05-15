@@ -125,6 +125,8 @@ export type Employee = {
   relationOfEmergencyContact: string
   emergencyContactNumber: string
   emailAddress: string
+  bank: BankDetails
+  designations: Designation
   status: "active" | "inactive"
 }
 
