@@ -179,7 +179,7 @@ export async function updateBankDetails(id: number, prevState: BankDetailsFormSt
     const validatedFields = BankDetailsFormSchema.safeParse({
         bankName: formData.get('bankName'),
         accountNumber: formData.get('accountNumber'),
-        fkEmployeeId: Number(formData.get('fkEmployeeId'))
+        fkEmployeeId: String(formData.get('fkEmployeeId'))
     })
 
     if (!validatedFields.success) {
