@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from "react-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from 'next/link';
 import {
   CheckIcon,
@@ -12,20 +12,29 @@ import {
 import { Button } from '@/components/ui/button';
 import { createEmployee } from "@/app/lib/actions/employees";
 import { Designation } from "@/app/lib/definitions";
-
+import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import DatePicker from 'react-date-picker';
+import 'react-calendar/dist/Calendar.css';
+import { DropdownMenuRadioGroup } from "@/components/ui/dropdown-menu";
+import { Radio, XIcon } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 // ... other imports ...
 
-export default function EmployeeForm({designations}: {designations: Designation[]}) {
+export default function EmployeeForm({ designations }: { designations: Designation[] }) {
   const initialState = { message: null, errors: {} };
 
   const [state, dispatch] = useFormState(createEmployee, initialState);
 
-  const [haveChildren, setHaveChildren] = useState(false);
-  const [children, setChildren] = useState([{ name: '', dateOfBirth: '' }]);
-  const [isMarried, setIsMarried] = useState(false);
+  const [haveChildren, setHaveChildren] = useState("No");
+  const [children, setChildren] = useState([{ name: '', gender: '', dateOfBirth: '', cnic: '' }]);
+  const [isMarried, setIsMarried] = useState("No");
 
   const handleAddChild = () => {
-    setChildren([...children, { name: '', dateOfBirth: '' }]);
+    setChildren([...children, { name: '', gender: '', dateOfBirth: '', cnic: '' }]);
   };
 
   const handleChildNameChange = (e: any, index: any) => {
@@ -33,10 +42,22 @@ export default function EmployeeForm({designations}: {designations: Designation[
     newChildren[index].name = e.target.value;
     setChildren(newChildren);
   };
-  
+
+  const handleChildGenderChange = (e: any, index: any) => {
+    const newChildren = [...children];
+    newChildren[index].gender = e.target.value;
+    setChildren(newChildren);
+  };
+
   const handleChildDateOfBirthChange = (e: any, index: any) => {
     const newChildren = [...children];
-    newChildren[index].dateOfBirth = e.target.value;
+    newChildren[index].dateOfBirth = e;
+    setChildren(newChildren);
+  };
+
+  const handleChildCnicChange = (e: any, index: any) => {
+    const newChildren = [...children];
+    newChildren[index].cnic = e.target.value;
     setChildren(newChildren);
   };
 
@@ -46,536 +67,515 @@ export default function EmployeeForm({designations}: {designations: Designation[
     setChildren(list);
   };
 
-  
+
+
+  type ValuePiece = Date | null;
+
+  type Value = ValuePiece | [ValuePiece, ValuePiece];
+  const [value, onChange] = useState<Value>();
+  const [spouseDateOfBirth, onChange1] = useState<Value>()
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const reader = new FileReader();
+    const file = e.target.files ? e.target.files[0] : null;
+
+    if (file) {
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+
+
+
   return (
     <form action={dispatch}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+      <div className="mx-auto max-w-8xl space-y-6 overflow-hidden">
 
         {/* Employees ID */}
 
-        <div className="mb-4">
-          <label htmlFor="id" className="mb-2 block text-sm font-medium">
-            Employee Number
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="id"
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Employee Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+            <div className="grid gap-2">
+              <Label htmlFor="id">ID</Label>
+              <Input id="id"
                 name="id"
                 type="number"
                 placeholder="Enter employee's number/id"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="desgination-name-error"
-              />
-            </div>
-          </div>
-        </div>
-        <div id="name-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.id &&
-            state.errors.id.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        {/*  Name  */}
-        <div className="mb-4">
-          <label htmlFor="name" className="mb-2 block text-sm font-medium">
-            Name
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter employee's name"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="desgination-name-error"
-              />
-            </div>
-          </div>
-        </div>
-        <div id="name-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.name &&
-            state.errors.name.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        {/* Gender */}
-        <div className="mb-4">
-            <label className="mb-2 block text-sm font-medium">
-              Gender
-            </label>
-            <div>
-            <input
-                id="genderMale"
-                name="gender"
-                type="radio"
-                value="Male"
-            />
-            <label htmlFor="genderMale" className="ml-2">Male</label>
-            </div>
-            <div>
-            <input
-                id="genderFemale"
-                name="gender"
-                type="radio"
-                value="Female"
-            />
-            <label htmlFor="genderFemale" className="ml-2">Female</label>
-            </div>
-
-            <div id="gender-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.gender &&
-            state.errors.gender.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-            </div>
-            
-        </div>
-
-        {/* Employees Date of Birth */}
-
-        <div className="mb-4">
-            <label htmlFor="dateOfBirth" className="mb-2 block text-sm font-medium">
-                Date of Birth
-            </label>
-            <div className="relative mt-2 rounded-md">
-                <div className="relative">
-                <input
-                    id="dateOfBirth"
-                    name="dateOfBirth"
-                    type="date"
-                    placeholder="Enter employee's date of birth"
-                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                    aria-describedby="dateOfBirth-error"
-                />
-                </div>
-            </div>
-            </div>
-            <div id="dateOfBirth-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-                {state.errors?.dateOfBirth &&
-                state.errors.dateOfBirth.map((error: string) => (
+                aria-describedby="desgination-name-error" />
+              <div id="id-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.id &&
+                  state.errors.id.map((error: string) => (
                     <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
+                      {error}
                     </p>
-                ))}
-        </div>
-
-        {/* Employees CNIC */}
-
-        <div className="mb-4">
-            <label htmlFor="cnic" className="mb-2 block text-sm font-medium">
-                CNIC
-            </label>
-            <div className="relative mt-2 rounded-md">
-                <div className="relative">
-                <input
-                    id="cnic"
-                    name="cnic"
-                    type="text"
-                    placeholder="Enter employee's CNIC in the format XXXXX-XXXXXXX-X"
-                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                    aria-describedby="cnic-error"
-                />
-                </div>
+                  ))}
+              </div>
             </div>
-            </div>
-            <div id="cnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-                {state.errors?.cnic &&
-                state.errors.cnic.map((error: string) => (
+
+
+            <div className="grid gap-2">
+              <Label htmlFor="fkDesignationId">Designation</Label>
+              <Select name="fkDesignationId">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select designation" />
+                </SelectTrigger>
+                <SelectContent>
+                  {designations.map((designation) => (
+                    <SelectItem key={designation.id} value={String(designation.id)}>
+                      {designation.designationName}
+                    </SelectItem>
+                  ))}
+
+
+                </SelectContent>
+              </Select>
+              <div id="fkDesignationId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.fkDesignationId &&
+                  state.errors.fkDesignationId.map((error: string) => (
                     <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
+                      {error}
                     </p>
-                ))}
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="fatherName" className="mb-2 block text-sm font-medium">
-            {"Father's Name"}
-        </label>
-        <input
-            id="fatherName"
-            name="fatherName"
-            type="text"
-            placeholder="Enter father's name"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="fatherName-error"
-        />
-        </div>
-        <div id="fatherName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.fatherName &&
-            state.errors.fatherName.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="fkDesignationId" className="mb-2 block text-sm font-medium">
-            {"Employee's Designation"}
-          </label>
-          <div className="relative">
-            <select
-              id="fkDesignationId"
-              name="fkDesignationId"
-              className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select a designation
-              </option>
-              {designations.map((designation) => (
-                <option key={designation.id} value={designation.id}>
-                  {designation.designationName}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div id="fkDesignationId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.fkDesignationId &&
-            state.errors.fkDesignationId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="emailAddress" className="mb-2 block text-sm font-medium">
-            Email Address
-        </label>
-        <input
-            id="emailAddress"
-            name="emailAddress"
-            placeholder="Enter email address"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="emailAddress-error"
-        />
-        </div>
-        <div id="emailAddress-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.emailAddress &&
-            state.errors.emailAddress.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="permanentAddress" className="mb-2 block text-sm font-medium">
-            Permanent Address
-        </label>
-        <input
-            id="permanentAddress"
-            name="permanentAddress"
-            type="text"
-            placeholder="Enter permanent address"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="permanentAddress-error"
-        />
-        </div>
-        <div id="permanentAddress-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.permanentAddress &&
-            state.errors.permanentAddress.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="mobileNumber" className="mb-2 block text-sm font-medium">
-            Mobile Number
-        </label>
-        <input
-            id="mobileNumber"
-            name="mobileNumber"
-            type="tel"
-            placeholder="Enter mobile number"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="mobileNumber-error"
-        />
-        </div>
-        <div id="mobileNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.mobileNumber &&
-            state.errors.mobileNumber.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="landlineNumber" className="mb-2 block text-sm font-medium">
-            Landline Number
-        </label>
-        <input
-            id="landlineNumber"
-            name="landlineNumber"
-            type="tel"
-            placeholder="Enter landline number (optional)"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="landlineNumber-error"
-        />
-        </div>
-        <div id="landlineNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.landlineNumber &&
-            state.errors.landlineNumber.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-
-        <div className="mb-4">
-            <label htmlFor="profileImage" className="mb-2 block text-sm font-medium">
-                Profile Image
-            </label>
-            <input
-                id="profileImage"
-                name="profileImage"
-                type="file"
-                accept="image/*"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="profileImage-error"
-            />
+                  ))}
+              </div>
             </div>
-            <div id="profileImage-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+            <div className="grid gap-2 sm:col-span-2">
+              <Label htmlFor="profileImage">Profile Image</Label>
+              <div className="flex items-center gap-4">
+                <Avatar className="h-16 w-16">
+                  {imagePreviewUrl ? (
+                    <AvatarImage src={imagePreviewUrl} alt="Employee" />
+                  ) : (
+                    <AvatarFallback>Avatar</AvatarFallback>
+                  )}
+                </Avatar>
+                <Input id="profileImage" name="profileImage" type="file" onChange={handleImageChange} />
+              </div>
+              <div id="profileImage-error" aria-live="polite" aria-atomic="true" className='mb-4'>
                 {state.errors?.profileImage &&
-                state.errors.profileImage.map((error: string) => (
+                  state.errors.profileImage.map((error: string) => (
                     <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
+                      {error}
                     </p>
-                ))}
-        </div>
-
-        <div className="mb-4">
-            <label className="mb-2 block text-sm font-medium">
-            Is Married?
-            </label>
-            <div>
-            <input
-                id="marriedYes"
-                name="isMarried"
-                type="radio"
-                value="Yes"
-                onChange={(e) => setIsMarried(e.target.value === 'Yes')}
-            />
-            <label htmlFor="marriedYes" className="ml-2">Yes</label>
-            </div>
-            <div>
-            <input
-                id="marriedNo"
-                name="isMarried"
-                type="radio"
-                value="No"
-                onChange={(e) => setIsMarried(e.target.value === 'Yes')}
-            />
-            <label htmlFor="marriedNo" className="ml-2">No</label>
+                  ))}
+              </div>
             </div>
 
-            <div id="isMarried-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.isMarried &&
-            state.errors.isMarried.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
+          </CardContent>
+
+        </Card>
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Personal Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" name="name" placeholder="Enter name" />
+              <div id="name-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.name &&
+                  state.errors.name.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
             </div>
-            
-        </div>
 
-        {isMarried && (
-        <>
-          <div className="mb-4">
-            <label htmlFor="spouseName" className="mb-2 block text-sm font-medium">
-              {"Spouse's Name"}
-            </label>
-            <input
-              id="spouseName"
-              name="spouseName"
-              type="text"
-              placeholder="Enter spouse's name"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby="spouseName-error"
-            />
-          </div>
-          <div id="spouseName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-              {state.errors?.spouseName &&
-              state.errors.spouseName.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                  </p>
-              ))}
-          </div>
 
-          <div className="mb-4">
-            <label htmlFor="spouseCnic" className="mb-2 block text-sm font-medium">
-              {"Spouse's CNIC"}
-            </label>
-            <input
-              id="spouseCnic"
-              name="spouseCnic"
-              type="text"
-              placeholder="Enter spouses's CNIC in the format XXXXX-XXXXXXX-X"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby="spouseCnic-error"
-            />
-          </div>
-          <div id="spouseCnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-              {state.errors?.spouseCnic &&
-              state.errors.spouseCnic.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                  </p>
-              ))}
-          </div>
-        </>
-        )}
+            <div className="grid gap-2">
+              <Label htmlFor="fatherName">{"Father's Name"}</Label>
+              <Input id="fatherName" name="fatherName" placeholder="Enter father's name" />
+              <div id="fatherName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.fatherName &&
+                  state.errors.fatherName.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
 
-        <div className="mb-4">
-        <label className="mb-2 block text-sm font-medium">
-          Have Children?
-        </label>
-        <div>
-          <input
-            id="haveChildrenYes"
-            name="haveChildren"
-            type="radio"
-            value="Yes"
-            onChange={(e) => setHaveChildren(e.target.value === 'Yes')}
-          />
-          <label htmlFor="haveChildrenYes" className="ml-2">Yes</label>
-        </div>
-        <div>
-          <input
-            id="haveChildrenNo"
-            name="haveChildren"
-            type="radio"
-            value="No"
-            onChange={(e) => setHaveChildren(e.target.value === 'Yes')}
-          />
-          <label htmlFor="haveChildrenNo" className="ml-2">No</label>
-        </div>
-        <div id="haveChildren-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.haveChildren &&
-            state.errors.haveChildren.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-                </p>
-            ))}
-        </div>
-      </div>
+            <div className="grid gap-2">
+              <Label htmlFor="cnic">CNIC</Label>
+              <Input id="cnic" name="cnic" placeholder="Enter CNIC in the format XXXXX-XXXXXXX-X" />
+              <div id="cnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.cnic &&
+                  state.errors.cnic.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
 
-      {haveChildren && (
-        <>
-          {children.map((child, index) => (
-            <div key={index}>
-              <div className="mb-4">
-                <div className="flex justify-between">
-                    <label htmlFor={`childName${index}`} className="mb-2 block text-sm font-medium">
-                      {"Child's Name"}
-                    </label>
+            <div className="grid gap-2">
+              <Label htmlFor="dateOfBirth">Date of Birth</Label>
 
-                    <button
-                    type='button' 
-                    className="flex h-6 items-center rounded-lg bg-blue-600 px-4 mb-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    onClick={() => handleRemoveChild(index)}>Remove Child</button>
+              <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='dateOfBirth' onChange={onChange} value={value} />
+              <div id="dateOfBirth-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.dateOfBirth &&
+                  state.errors.dateOfBirth.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Select name="gender">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                  {/* <SelectItem value="other">Other</SelectItem> */}
+                </SelectContent>
+              </Select>
+              <div id="gender-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.gender &&
+                  state.errors.gender.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+
+
+
+
+
+          </CardContent>
+
+        </Card>
+
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Contact Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="emailAddress">Email Address</Label>
+              <Input id="emailAddress" name="emailAddress" placeholder="Enter email address" type="email" />
+              <div id="emailAddress-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.emailAddress &&
+                  state.errors.emailAddress.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="mobileNumber">Mobile Number</Label>
+              <Input id="mobileNumber" name="mobileNumber" type="text" placeholder="Enter mobile number" />
+              <div id="mobileNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.mobileNumber &&
+                  state.errors.mobileNumber.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="landlineNumber">Landline Number</Label>
+              <Input id="landlineNumber" name="landlineNumber" type="text" placeholder="Enter landline number" />
+              <div id="mobileNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.landlineNumber &&
+                  state.errors.landlineNumber.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2 sm:col-span-2">
+              <Label htmlFor="currentAddress">Current Address</Label>
+              <Textarea id="currentAddress" name="currentAddress" placeholder="Enter current address" />
+              <div id="permanentAddress-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.currentAddress &&
+                  state.errors.currentAddress.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2 sm:col-span-2">
+              <Label htmlFor="permanentAddress">Permanent Address</Label>
+              <Textarea id="permanentAddress" name="permanentAddress" placeholder="Enter permanent address" />
+              <div id="permanentAddress-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.permanentAddress &&
+                  state.errors.permanentAddress.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+          </CardContent>
+
+        </Card>
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Emergency Contact</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="emergencyContactName">Emergency Contact Name</Label>
+              <Input id="emergencyContactName" name="emergencyContactName" placeholder="Enter emergency contact name" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="relationOfEmergencyContact">Relationship</Label>
+              <Input id="relationOfEmergencyContact" name="relationOfEmergencyContact" placeholder="Enter relationship" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="emergencyContactNumber">Emergency Contact Number</Label>
+              <Input id="emergencyContactNumber" name="emergencyContactNumber" type="text" placeholder="Enter emergency contact number" />
+            </div>
+          </CardContent>
+
+        </Card>
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Family Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+            <div className="grid gap-2">
+              <Label htmlFor="marital-status">Is Married ?</Label>
+              <Select name="isMarried" onValueChange={(value) => { setIsMarried(value) }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Is Married?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="No">No</SelectItem>
+                  <SelectItem value="Yes">Yes</SelectItem>
+                </SelectContent>
+              </Select>
+              <div id="isMarried-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.isMarried &&
+                  state.errors.isMarried.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            {isMarried === 'Yes' && (
+              <>
+
+                <h5 className="grid col-span-2 font-bold">Spouse Details</h5>
+
+                <div className="grid gap-2 col-span-2 sm:col-span-1">
+                  <Label htmlFor="spouseName">Spouse Name</Label>
+                  <Input id="spouseName" name="spouseName" placeholder="Enter spouse name" />
+                  <div id="spouseName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                    {state.errors?.spouseName &&
+                      state.errors.spouseName.map((error: string) => (
+                        <p className="mt-2 text-sm text-red-500" key={error}>
+                          {error}
+                        </p>
+                      ))}
+                  </div>
                 </div>
-                
-                <input
-                    id={`childName${index}`}
-                    name={`childName${index}`}
-                    type="text"
-                    placeholder="Enter child's name"
-                    required
-                    value={child.name}
-                    onChange={(e) => handleChildNameChange(e, index)}
-                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                    aria-describedby={`childName${index}-error`}
-                />
-              </div>
+                <div className="grid gap-2 col-span-2 sm:col-span-1">
+                  <Label htmlFor="spouseGender">Gender</Label>
+                  <Select name="spouseGender">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                      {/* <SelectItem value="other">Other</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                  <div id="spouseGender-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                    {state.errors?.spouseGender &&
+                      state.errors.spouseGender.map((error: string) => (
+                        <p className="mt-2 text-sm text-red-500" key={error}>
+                          {error}
+                        </p>
+                      ))}
+                  </div>
 
-              <div className="mb-4">
-                <label htmlFor={`childDateOfBirth${index}`} className="mb-2 block text-sm font-medium">
-                  {"Child's Date of Birth"}
-                </label>
-                <input
-                    id={`childDateOfBirth${index}`}
-                    name={`childDateOfBirth${index}`}
-                    type="date"
-                    required
-                    placeholder="Enter child's date of birth"
-                    value={child.dateOfBirth}
-                    onChange={(e) => handleChildDateOfBirthChange(e, index)}
-                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-                    aria-describedby={`childDateOfBirth${index}-error`}
-                />
+                </div>
+                <div className="grid gap-2 col-span-2 sm:col-span-1">
+                  <Label htmlFor="spouseCnic">Spouse CNIC</Label>
+                  <Input id="spouseCnic" name="spouseCnic" placeholder="Enter spouse CNIC in the format XXXXX-XXXXXXX-X" />
+                  <div id="spouseCnic-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                    {state.errors?.spouseCnic &&
+                      state.errors.spouseCnic.map((error: string) => (
+                        <p className="mt-2 text-sm text-red-500" key={error}>
+                          {error}
+                        </p>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-2 col-span-2 sm:col-span-1">
+                  <Label htmlFor="spouseDateOfBirth">Spouse Date of Birth</Label>
+
+                  <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='spouseDateOfBirth' onChange={onChange1} value={spouseDateOfBirth} />
+                  <div id="spouseDateOfBirth-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                    {state.errors?.spouseDateOfBirth &&
+                      state.errors.spouseDateOfBirth.map((error: string) => (
+                        <p className="mt-2 text-sm text-red-500" key={error}>
+                          {error}
+                        </p>
+                      ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="grid gap-2">
+              <Label htmlFor="haveChildren">Have Children ?</Label>
+              <Select name="haveChildren" onValueChange={(value) => {
+                setHaveChildren(value);
+                if (value === 'No') {
+                  setChildren([]); // Optionally clear children when "No" is selected
+                }
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Have Children?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="No">No</SelectItem>
+                  <SelectItem value="Yes">Yes</SelectItem>
+                </SelectContent>
+              </Select>
+              <div id="haveChildren-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.haveChildren &&
+                  state.errors.haveChildren.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
               </div>
-              
             </div>
-          ))}
-                <button   
-                className="flex mb-4 h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" 
-                type="button" 
-                onClick={handleAddChild}>Add Another Child</button>
-        </>
-      )}
 
 
-        <div className="mb-4">
-        <label htmlFor="emergencyContactName" className="mb-2 block text-sm font-medium">
-            Emergency Contact Name
-        </label>
-        <input
-            id="emergencyContactName"
-            name="emergencyContactName"
-            type="text"
-            placeholder="Enter emergency contact name"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="emergencyContactName-error"
-        />
-        </div>
+            {haveChildren === 'Yes' && (
+              <>
+                <h5 className="grid col-span-2 font-bold">Children Details</h5>
 
-        <div className="mb-4">
-        <label htmlFor="relationOfEmergencyContact" className="mb-2 block text-sm font-medium">
-            Relation of Emergency Contact
-        </label>
-        <input
-            id="relationOfEmergencyContact"
-            name="relationOfEmergencyContact"
-            type="text"
-            placeholder="Enter relation of emergency contact"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="relationOfEmergencyContact-error"
-        />
-        </div>
+                {children.map((child, index) => (
+                  <React.Fragment key={`child${index}`}>
+                    <div key={`divchild${index}`} className="flex col-span-2 gap-4">
+                      <h6 className="inline-flex">Child {index + 1}</h6>
+                      <Button type="button" className="inline-flex p-1 h-6" onClick={() => handleRemoveChild(index)}>
+                        <XIcon className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid gap-2 col-span-2 sm:col-span-1">
+                      <Label htmlFor={`childName${index}`}>Name</Label>
 
-        <div className="mb-4">
-        <label htmlFor="emergencyContactNumber" className="mb-2 block text-sm font-medium">
-            Emergency Contact Number
-        </label>
-        <input
-            id="emergencyContactNumber"
-            name="emergencyContactNumber"
-            type="tel"
-            placeholder="Enter emergency contact number"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
-            aria-describedby="emergencyContactNumber-error"
-        />
-        </div>
+                      <Input id={`childName${index}`}
+                        onChange={(e) => handleChildNameChange(e, index)}
+                        name={`childName${index}`} placeholder="Enter Child Name" />
+
+                    </div>
+                    <div className="grid gap-2 col-span-2 sm:col-span-1">
+                      <Label htmlFor={`childGender${index}`}>Gender</Label>
+                      <Select name={`childGender${index}`}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem onChange={(e) => handleChildGenderChange(e, index)} value="Male">Male</SelectItem>
+                          <SelectItem onChange={(e) => handleChildGenderChange(e, index)} value="Female">Female</SelectItem>
+                          {/* <SelectItem value="Other">Other</SelectItem> */}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2 col-span-2 sm:col-span-1">
+                      <Label htmlFor={`childCnic${index}`}>B-Form/CNIC</Label>
+                      <Input id={`childCnic${index}`}
+                        onChange={(e) => handleChildCnicChange(e, index)}
+                        name={`childCnic${index}`} placeholder="Enter child CNIC in the format XXXXX-XXXXXXX-X" />
+                    </div>
+                    <div className="grid gap-2 col-span-2 sm:col-span-1">
+                      <Label htmlFor={`childDateOfBirth${index}`}>Date of Birth</Label>
+                      <DatePicker
+                        format="dd-MM-y"
+                        className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+                        name={`childDateOfBirth${index}`}
+                        onChange={(date) => handleChildDateOfBirthChange(date, index)}
+                        value={children[index].dateOfBirth}
+                      />
+                    </div>
+                  </React.Fragment>
+                ))}
+                <div className="flex justify-center col-span-2">
+                  <Button type="button" onClick={handleAddChild}>Add another child</Button>
+                </div>
+              </>
+            )}
+
+
+
+          </CardContent>
+
+        </Card>
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Bank Account Details</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="bankName">Bank Name</Label>
+              <Input id="bankName" name="bankName" placeholder="Enter bank name" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="accountNumber">Account Number</Label>
+              <Input id="accountNumber" name="accountNumber" placeholder="Enter account number" />
+            </div>
+          </CardContent>
+
+        </Card>
 
         <div id="form-response" aria-live="polite" aria-atomic="true" className='mb-4 md:flex justify-center'>
             {state.message && (
@@ -584,8 +584,9 @@ export default function EmployeeForm({designations}: {designations: Designation[
                 </p>
             )}
         </div>
-        
+
       </div>
+
       <div className="mt-6 flex justify-center gap-4">
         <Button asChild variant={'outline'}>
           <Link

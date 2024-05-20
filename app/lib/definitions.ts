@@ -101,7 +101,9 @@ export type Designation = {
 export type EmployeeChild = {
   id?: number
   childName: string
+  childGender: "Male" | "Female"
   dateOfBirth: string
+  childCnic: string
 }
 
 export type Employee = {
@@ -115,12 +117,15 @@ export type Employee = {
   isMarried: 'Yes' | 'No'
   haveChildren: 'Yes' | 'No'
   profileImage: string
+  currentAddress: string
   permanentAddress: string
   mobileNumber: string
   landlineNumber: string
   employeeChildrenDetails: EmployeeChild[]
   spouseName: string
+  spouseGender: "Male" | "Female"
   spouseCnic: string
+  spouseDateOfBirth: string
   emergencyContactName: string
   relationOfEmergencyContact: string
   emergencyContactNumber: string

@@ -84,6 +84,10 @@ export default function EmployeeInformation({ employee }: { employee: Employee }
 
                             </div>
                             <div className="grid-cols-4">
+                                <Label htmlFor="address" className="font-bold">Current Address</Label>
+                                <p>{employee.currentAddress}</p>
+                            </div>
+                            <div className="grid-cols-4">
                                 <Label htmlFor="address" className="font-bold">Permanent Address</Label>
                                 <p>{employee.permanentAddress}</p>
                             </div>
@@ -122,6 +126,14 @@ export default function EmployeeInformation({ employee }: { employee: Employee }
                                             <p>{employee.spouseName}</p>
                                         </div>
                                         <div>
+                                            <Label htmlFor="spouse-gender" className="font-bold">Spouse Gender</Label>
+                                            <p>{employee.spouseGender}</p>
+                                        </div>
+                                        <div>
+                                            <Label htmlFor="spouse-dateOfBirth" className="font-bold">Spouse Date Of Birth</Label>
+                                            <p>{formattedDOB(employee.spouseDateOfBirth)}</p>
+                                        </div>
+                                        <div>
                                             <Label htmlFor="spouse-cnic" className="font-bold">Spouse CNIC</Label>
                                             <p>{employee.spouseCnic}</p>
                                         </div>
@@ -137,8 +149,16 @@ export default function EmployeeInformation({ employee }: { employee: Employee }
                                                     <p>{child.childName}</p>
                                                 </div>
                                                 <div>
+                                                    <Label htmlFor="child-gender-1" className="font-bold">Child {index + 1} Gender</Label>
+                                                    <p>{child.childGender}</p>
+                                                </div>
+                                                <div>
                                                     <Label htmlFor="child-dob-1" className="font-bold">Child {index + 1} Date of Birth</Label>
                                                     <p>{formattedDOB(child.dateOfBirth)}</p>
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="child-cnic-1" className="font-bold">Child {index + 1} B-FORM/CNIC</Label>
+                                                    <p>{child.childCnic}</p>
                                                 </div>
                                             </>
                                         )

@@ -17,7 +17,7 @@ import { BankDetails } from '@/app/lib/definitions';
 export default function Form({
   bankDetail
 }: {
-    bankDetail: BankDetails
+  bankDetail: BankDetails
 }) {
 
   console.log(bankDetail)
@@ -26,7 +26,7 @@ export default function Form({
   const initialState = { message: null, errors: {} };
 
   // Define a new function that takes an id and formData, and calls updateDesignation with the correct arguments.
-  const updateBankDetailsWithId = updateBankDetails.bind(null,  id)
+  const updateBankDetailsWithId = updateBankDetails.bind(null, id)
 
   const [state, dispatch] = useFormState(updateBankDetailsWithId, initialState);
 
@@ -34,9 +34,9 @@ export default function Form({
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
 
- {/* Account Holder Number*/}
+        {/* Account Holder Number*/}
 
- <div className="mb-4">
+        <div className="mb-4">
           <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
             Employee Number
           </label>
@@ -56,15 +56,15 @@ export default function Form({
           </div>
         </div>
         <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.fkEmployeeId &&
+          {state.errors?.fkEmployeeId &&
             state.errors.fkEmployeeId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-                </p>
+              </p>
             ))}
         </div>
 
- {/* Account Holder Name*/}
+        {/* Account Holder Name*/}
         <div className="mb-4">
           <label htmlFor="fkEmployeeId" className="mb-2 block text-sm font-medium">
             Employee Name
@@ -85,11 +85,11 @@ export default function Form({
           </div>
         </div>
         <div id="fkEmployeeId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.fkEmployeeId &&
+          {state.errors?.fkEmployeeId &&
             state.errors.fkEmployeeId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-                </p>
+              </p>
             ))}
         </div>
 
@@ -114,11 +114,11 @@ export default function Form({
           </div>
         </div>
         <div id="bankName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.bankName &&
+          {state.errors?.bankName &&
             state.errors.bankName.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-                </p>
+              </p>
             ))}
         </div>
 
@@ -143,22 +143,22 @@ export default function Form({
           </div>
         </div>
         <div id="accountNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
-            {state.errors?.accountNumber &&
+          {state.errors?.accountNumber &&
             state.errors.accountNumber.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-                </p>
+              </p>
             ))}
         </div>
 
         <div id="form-response" aria-live="polite" aria-atomic="true" className='mb-4 md:flex justify-center'>
-            {state.message && (
-                <p className={"mt-4 text-lg text-red-500"} >
-                {state.message}
-                </p>
-            )}
+          {state.message && (
+            <p className={"mt-4 text-lg text-red-500"} >
+              {state.message}
+            </p>
+          )}
         </div>
-        
+
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
