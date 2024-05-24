@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-import { View, Edit, Deactivate, AddBankAccount } from "@/app/ui/employees/buttons"
+import { View, Edit, Deactivate, AddBankAccount, Promote } from "@/app/ui/employees/buttons"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -62,40 +62,51 @@ export const columns: ColumnDef<Employee>[] = [
  
       return (
         <DropdownMenu>
+
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
 
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
               <View id={employee.id}/>
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
               <Edit id={employee.id}/>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem disabled={employee.status === 'inactive'}>
-              <Deactivate id={employee.id}/>
+            <DropdownMenuItem className="p-0">
+              <Promote id={employee.id}/>
             </DropdownMenuItem>
 
-            <DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="p-0">
               <AddBankAccount id={employee.id}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="p-0" disabled={employee.status === 'inactive'}>
+              <Deactivate id={employee.id}/>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(String(employee.id))}
+              className="cursor-pointer"
             >
               Copy ID
             </DropdownMenuItem>

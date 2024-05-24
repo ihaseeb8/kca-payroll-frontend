@@ -9,7 +9,7 @@ import {
 
 } from '@heroicons/react/24/outline';
 
-import { HomeIcon, UsersIcon, BriefcaseBusiness, MapPinned, Landmark } from 'lucide-react';
+import { HomeIcon, UsersIcon, BriefcaseBusiness, MapPinned, Landmark, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
@@ -29,6 +29,7 @@ const links = [
   // },
   // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   { name: 'Bank Accounts', href: '/dashboard/banks', icon: Landmark},
+  { name: 'Promotions', href: '/dashboard/promotions', icon: TrendingUp}
 
 ];
 

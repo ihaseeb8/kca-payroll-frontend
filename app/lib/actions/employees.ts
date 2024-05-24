@@ -215,7 +215,7 @@ export async function updateEmployee(prevState: EmployeeFormState, formData: For
   })
 
   if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors)
+    // console.log(validatedFields.error.flatten().fieldErrors)
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update Employee.',
