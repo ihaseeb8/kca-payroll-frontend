@@ -438,3 +438,53 @@ export function EmployeesTableSkeleton() {
     </div>
   )
 }
+
+// ------------------------------------- SKeletons for Promotions -----------------------------------------------
+export function PromotionRowSkeleton() {
+
+  return(
+    <TableRow>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+      <TableCell> <Skeleton className="w-1/2 h-8"/> </TableCell>
+    </TableRow>
+  )
+}
+
+export function PromotionsTableSkeleton() {
+
+  return (
+    
+    <div className="rounded-md border mt-6">
+      <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>ID</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Previous Designation</TableHead>
+          <TableHead>Promoted To</TableHead>
+          <TableHead>Salary Increment</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+        <PromotionRowSkeleton />
+      </TableBody>
+    </Table>      
+
+    </div>
+  )
+}

@@ -21,7 +21,7 @@ export function View({id}: {id: number}){
     return(
         <Link
             href={`/dashboard/employees/${id}/view`}
-            className='w-full'
+            className='w-full text-start px-2 py-1.5'
         >
             View
         </Link>
@@ -32,7 +32,7 @@ export function Edit({id}: {id :number}){
     return(
         <Link 
             href={`/dashboard/employees/${id}/edit`}
-            className='w-full'
+            className='w-full text-start px-2 py-1.5'
         >
             Edit
         </Link>
@@ -43,8 +43,10 @@ export function Deactivate({id}: {id :number}){
 
     const deactivateEmployeewithId = deactivateEmployee.bind(null,id);
     return(
-        <form action={deactivateEmployeewithId}>
-            <button>Deactivate</button>
+        <form action={deactivateEmployeewithId} className='w-full'>
+            <button type="submit" className='w-full text-start px-2 py-1.5'>
+                Deactivate
+            </button>
         </form>
     )
 }
@@ -53,9 +55,20 @@ export function AddBankAccount({id}: {id :number}){
     return(
         <Link 
             href={`/dashboard/employees/${id}/addBank`}
-            className='w-full'
+            className='w-full text-start px-2 py-1.5'
         >
             Add Bank Account
+        </Link>
+    )
+}
+
+export function Promote({id}: {id :number}){
+    return(
+        <Link 
+            href={`/dashboard/employees/${id}/promote`}
+            className='w-full text-start px-2 py-1.5'
+        >
+            Promote
         </Link>
     )
 }
