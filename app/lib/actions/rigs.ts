@@ -15,14 +15,14 @@ const endpoint = process.env.API_URL;
 
 // ------------------------------------- Create Rig Location
 const RigLocationFormSchema = z.object({
-    rigBase: z.string().min(1, "Rig Base is required"),
-    rigBaseOffice: z.string().min(1, "Rig Base Office is required"),
+    locationName: z.string().min(1, "Location Name is required"),
+    locationType: z.string().min(1, "Location Type is required"),
 })
 
 export type RigLocationFormState = {
     errors?: {
-        rigBase?: string[];
-        rigBaseOffice?: string[];
+        locationName?: string[];
+        locationType?: string[];
     };
     message?: string | null;
 };
@@ -32,8 +32,8 @@ export async function CreateRigLocation(prevState: RigLocationFormState, formDat
 
     // validate form fields using Zod
     const validatedFields = RigLocationFormSchema.safeParse({
-        rigBase: formData.get('rigBase'),
-        rigBaseOffice: formData.get('rigBaseOffice'),
+        locationName: formData.get('locationName'),
+        locationType: formData.get('locationType'),
     })
 
     if (!validatedFields.success) {
@@ -218,7 +218,7 @@ export async function toggleStatus(id: number, status: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ "rigStatus": status })
+            body: JSON.stringify({ "locationStatus": status })
         });
 
         const body = await response.json();
@@ -245,8 +245,8 @@ export async function updateRigLocation(id: number, prevState: RigLocationFormSt
 
     // validate form fields using Zod
     const validatedFields = RigLocationFormSchema.safeParse({
-        rigBase: formData.get('rigBase'),
-        rigBaseOffice: formData.get('rigBaseOffice'),
+        locationName: formData.get('locationName'),
+        locationType: formData.get('locationType'),
     })
 
     if (!validatedFields.success) {

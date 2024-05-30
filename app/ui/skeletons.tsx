@@ -312,8 +312,8 @@ export function RigsTableSkeleton() {
       <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Base</TableHead>
-          <TableHead>Office</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Location Type</TableHead>
           <TableHead>Status</TableHead>
           <TableHead></TableHead>
         </TableRow>

@@ -33,10 +33,10 @@ export default async function Page({
   return (
     <div className="w-full">
         <div className="flex w-full items-center justify-between">
-            <h1 className={`${lusitana.className} text-2xl`}>Rig Locations</h1>
+            <h1 className={`${lusitana.className} text-2xl`}>Locations</h1>
         </div>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-            <Search placeholder="Search Rig Locations..." />
+            <Search placeholder="Search Locations..." />
             <CreateRigLocation />
         </div>
         <Suspense key={query + currentPage} fallback={<RigsTableSkeleton />}>
