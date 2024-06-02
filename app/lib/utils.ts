@@ -85,3 +85,8 @@ export const avatarFallbackstring = (name: string) => {
 export const formattedDOB = (date: string) => {
   return new Date(date).toLocaleDateString('en-GB', {year: 'numeric', month: '2-digit', day: '2-digit'})
 }
+
+export const formattedDate = (date: Date) => {
+  return new Date(date).toLocaleDateString('en-GB', {year: 'numeric', month: 'short', day: '2-digit'})
+}
+

@@ -156,3 +156,11 @@ export type AccountHolder = {
   name: string
   cnic: string
 }
+
+export type Bonus = {
+  id: number
+  name: string
+  amount: number
+  date: Date
+  fkEmployeeId: number
+}

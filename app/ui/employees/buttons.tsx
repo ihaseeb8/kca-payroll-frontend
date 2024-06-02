@@ -62,6 +62,17 @@ export function AddBankAccount({id}: {id :number}){
     )
 }
 
+export function Bonuses({id}: {id :number}){
+    return(
+        <Link 
+            href={`/dashboard/employees/${id}/bonuses`}
+            className='w-full text-start px-2 py-1.5'
+        >
+            Bonuses
+        </Link>
+    )
+}
+
 export function Promote({id}: {id :number}){
     return(
         <Link 
