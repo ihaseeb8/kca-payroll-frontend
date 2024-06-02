@@ -375,7 +375,7 @@ export async function fetchEmployees(pageSize: number = 10, currentPage: number 
 
   } catch (e) {
     console.error(e)
-    throw new Error('Failed to fetch employees pages')
+    throw new Error('Failed to fetch employees')
   }
 
 }

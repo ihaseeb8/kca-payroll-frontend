@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-import { View, Edit, Deactivate, AddBankAccount, Promote } from "@/app/ui/employees/buttons"
+import { View, Edit, Deactivate, AddBankAccount, Promote, Bonuses } from "@/app/ui/employees/buttons"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -88,6 +88,12 @@ export const columns: ColumnDef<Employee>[] = [
 
             <DropdownMenuItem className="p-0">
               <Promote id={employee.id}/>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="p-0">
+              <Bonuses id={employee.id}/>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
