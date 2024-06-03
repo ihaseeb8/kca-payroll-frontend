@@ -22,18 +22,18 @@ import { ToggleStatus, UpdateRigLocation } from "@/app/ui/rigs/buttons"
 
  export const columns: ColumnDef<RigLocation>[] = [
   {
-    accessorKey: "rigBase",
-    header: "Base",
+    accessorKey: "locationName",
+    header: "Name",
   },
   {
-    accessorKey: "rigBaseOffice",
-    header: "Office",
+    accessorKey: "locationType",
+    header: "Location Type",
   },
   {
-    accessorKey: "rigStatus",
+    accessorKey: "locationStatus",
     header: "Status",
     cell: ({row}) => {
-      const status = row.getValue('rigStatus')
+      const status = row.getValue('locationStatus')
       const icon = status === 'active' ? <BadgeCheckIcon className="text-success"/> : <BadgeXIcon className="text-destructive" />;
       return <>{icon}</>
     }
@@ -65,7 +65,7 @@ import { ToggleStatus, UpdateRigLocation } from "@/app/ui/rigs/buttons"
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="p-0">
-              <ToggleStatus id={rigLocation.id} status={rigLocation.rigStatus}/>
+              <ToggleStatus id={rigLocation.id} status={rigLocation.locationStatus}/>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

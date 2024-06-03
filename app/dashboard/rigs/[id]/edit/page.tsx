@@ -19,9 +19,9 @@ export default async function Page({
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                { label: 'Rig Locations', href: '/dashboard/rigs' },
+                { label: 'Locations', href: '/dashboard/rigs' },
                 {
-                    label: 'Edit Rig Location',
+                    label: 'Edit Location',
                     href: `/dashboard/rigs/${id}/edit`,
                     active: true,
                 },

@@ -21,7 +21,7 @@ const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
   { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon},
   { name: 'Designations', href: '/dashboard/designations', icon: BriefcaseBusiness},
-  { name: 'Rig Locations', href: '/dashboard/rigs', icon: MapPinned},
+  { name: 'Locations', href: '/dashboard/rigs', icon: MapPinned},
   // {
   //   name: 'Invoices',
   //   href: '/dashboard/invoices',

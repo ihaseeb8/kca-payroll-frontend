@@ -137,9 +137,9 @@ export type Employee = {
 
 export type RigLocation = {
   id: number
-  rigBase: string
-  rigBaseOffice: string
-  rigStatus: "active" | "inactive"
+  locationName: string
+  locationType: "Rig" | "Office"
+  locationStatus: "active" | "inactive"
 }
 
 export type BankDetails = {
