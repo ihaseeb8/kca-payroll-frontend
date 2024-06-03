@@ -35,7 +35,7 @@ export default function MonthSelector(){
     const searchParams = useSearchParams()
     const pathname = usePathname()
     const router = useRouter()
-    const month = searchParams.get('month') || String(new Date().getMonth())
+    const month = searchParams.get('month') || String(new Date().getMonth() + 1)
 
     const setMonth = (month: string) => {
         const params = new URLSearchParams(searchParams)
@@ -48,7 +48,7 @@ export default function MonthSelector(){
 
     return(
         <Select defaultValue={month} onValueChange={(value) => setMonth(value)}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger>
                 <SelectValue placeholder="Select a Month" />
             </SelectTrigger>
             <SelectContent>

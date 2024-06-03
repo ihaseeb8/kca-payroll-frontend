@@ -17,11 +17,10 @@ export default async function Page({
 }){
     const currentPage = Number(searchParams?.currentPage || 1);
     const pageSize = Number(searchParams?.pageSize || 10);
-    const month = searchParams?.month || String(new Date().getMonth());
+    const month = searchParams?.month || String(new Date().getMonth() + 1);
     const year = searchParams?.year || String(new Date().getFullYear());
     const name = searchParams?.query || '';
     const id = Number(params.id)
-
 
     const totalPages = await fetchBonusesPages(id,pageSize,month,year,name);
     
@@ -34,15 +33,31 @@ export default async function Page({
                 ]}
             />
             
-            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                <Search placeholder="Search bonus by name"/>
-                <MonthSelector />
-                <div>
-                    <YearSelector />
+            <div className="mt-4 items-center justify-between gap-2 md:mt-8">
+                <div className="flex items-center gap-4 w-full justify-between">
+                    <Search placeholder="Search bonus by name" className="max-w-[92%] flex-1"/>
+                    <div className="gap-2 hidden lg:flex">
+                        <div className="flex-[0.7]">
+                            <MonthSelector />
+                        </div>
+                        
+                        <div className="flex-[0.7]">
+                            <YearSelector />
+                        </div>
+                    </div>
+                    <AddBonus employeeId={id} />
                 </div>
-                <AddBonus employeeId={id}/>
-
+                <div className="flex items-center justify-center gap-4 mt-4 w-full lg:hidden">
+                    <div className="flex-1">
+                        <MonthSelector />
+                    </div>
+                    
+                    <div className="flex-1">
+                        <YearSelector />
+                    </div>
+                </div>
             </div>
+
             <Suspense key={name + currentPage + pageSize + id + year + month} fallback={<>Loading...</>}>
                 <BonusesTable currentPage={currentPage} pageSize={pageSize} id={id} name={name} month={month} year={year}/>
             </Suspense>
