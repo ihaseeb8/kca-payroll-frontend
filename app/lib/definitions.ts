@@ -164,3 +164,11 @@ export type Bonus = {
   date: Date
   fkEmployeeId: number
 }
+
+export type Expenses = {
+  id: number
+  name: string
+  amount: number
+  date: Date
+  fkEmployeeId: number
+}

@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Employee } from "@/app/lib/definitions"
-import {MoreHorizontal, BadgeCheckIcon, Badge, BadgeXIcon} from "lucide-react"
+import { MoreHorizontal, BadgeCheckIcon, Badge, BadgeXIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-import { View, Edit, Deactivate, AddBankAccount, Promote, Bonuses } from "@/app/ui/employees/buttons"
+import { View, Edit, Deactivate, AddBankAccount, Promote, Expenses, Bonuses } from "@/app/ui/employees/buttons"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -48,9 +48,9 @@ export const columns: ColumnDef<Employee>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const status = row.getValue('status')
-      const icon = status === 'active' ? <BadgeCheckIcon className="text-success"/> : <BadgeXIcon className="text-destructive"/>;
+      const icon = status === 'active' ? <BadgeCheckIcon className="text-success" /> : <BadgeXIcon className="text-destructive" />;
       return <>{icon}</>
     },
   },
@@ -59,7 +59,7 @@ export const columns: ColumnDef<Employee>[] = [
     size: 2,
     cell: ({ row }) => {
       const employee = row.original
- 
+
       return (
         <DropdownMenu>
 
@@ -75,37 +75,42 @@ export const columns: ColumnDef<Employee>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuItem className="p-0">
-              <View id={employee.id}/>
-            </DropdownMenuItem>
-            
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="p-0">
-              <Edit id={employee.id}/>
+              <View id={employee.id} />
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="p-0">
-              <Promote id={employee.id}/>
+              <Edit id={employee.id} />
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="p-0">
-              <Bonuses id={employee.id}/>
+              <Promote id={employee.id} />
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="p-0">
-              <AddBankAccount id={employee.id}/>
+              <Bonuses id={employee.id} />
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="p-0">
+              <Expenses id={employee.id} />
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="p-0">
+              <AddBankAccount id={employee.id} />
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="p-0" disabled={employee.status === 'inactive'}>
-              <Deactivate id={employee.id}/>
+              <Deactivate id={employee.id} />
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
@@ -116,7 +121,7 @@ export const columns: ColumnDef<Employee>[] = [
             >
               Copy ID
             </DropdownMenuItem>
-            
+
           </DropdownMenuContent>
         </DropdownMenu>
       )
