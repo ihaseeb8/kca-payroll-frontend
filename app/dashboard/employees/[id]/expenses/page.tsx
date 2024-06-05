@@ -34,14 +34,29 @@ export default async function Page({
                 ]}
             />
             
-            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                <Search placeholder="Search expense by name"/>
-                <MonthSelector />
-                <div>
-                    <YearSelector />
+             <div className="mt-4 items-center justify-between gap-2 md:mt-8">
+                <div className="flex items-center gap-4 w-full justify-between">
+                    <Search placeholder="Search expense by name" className="max-w-[92%] flex-1"/>
+                    <div className="gap-2 hidden lg:flex">
+                        <div className="flex-[0.7]">
+                            <MonthSelector />
+                        </div>
+                        
+                        <div className="flex-[0.7]">
+                            <YearSelector />
+                        </div>
+                    </div>
+                    <AddExpense employeeId={id} />
                 </div>
-                <AddExpense employeeId={id}/>
-
+                <div className="flex items-center justify-center gap-4 mt-4 w-full lg:hidden">
+                    <div className="flex-1">
+                        <MonthSelector />
+                    </div>
+                    
+                    <div className="flex-1">
+                        <YearSelector />
+                    </div>
+                </div>
             </div>
             <Suspense key={name + currentPage + pageSize + id + year + month} fallback={<>Loading...</>}>
                 <ExpenseTable currentPage={currentPage} pageSize={pageSize} id={id} name={name} month={month} year={year}/>

@@ -65,7 +65,7 @@ export function EditExpense({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add Expense</DialogTitle>
+                    <DialogTitle>Edit Expense</DialogTitle>
                 </DialogHeader>
                 
                 <form action={dispatch}>

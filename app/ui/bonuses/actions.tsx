@@ -65,7 +65,7 @@ export function EditBonus({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add Bonus</DialogTitle>
+                    <DialogTitle>Edit Bonus</DialogTitle>
                 </DialogHeader>
                 
                 <form action={dispatch}>
