@@ -73,6 +73,17 @@ export function Bonuses({id}: {id :number}){
     )
 }
 
+export function Expenses({id}: {id :number}){
+    return(
+        <Link 
+            href={`/dashboard/employees/${id}/expenses`}
+            className='w-full text-start px-2 py-1.5'
+        >
+            Expenses
+        </Link>
+    )
+}
+
 export function Promote({id}: {id :number}){
     return(
         <Link 

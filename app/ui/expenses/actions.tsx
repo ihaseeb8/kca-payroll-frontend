@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { updateBonus, addBonus, deleteBonus } from "@/app/lib/actions/bonuses"
+import { updateExpense, addExpense, deleteExpense } from "@/app/lib/actions/expenses"
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useFormState } from "react-dom"
 import { useState, useEffect } from "react";
@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner"
 import { ClipboardPen, Trash } from "lucide-react";
 
-export function EditBonus({
+export function EditExpense({
     id,
     name,
     amount,
@@ -36,15 +36,15 @@ export function EditBonus({
 }){
     const createdAt = new Date(date)
     const initialState = { message: null, errors: {} };
-    const [state, dispatch] = useFormState(updateBonus, initialState);
+    const [state, dispatch] = useFormState(updateExpense, initialState);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         
-        if (state.message === "Bonus updated successfully!") {
+        if (state.message === "Expense updated successfully!") {
             setIsDialogOpen(false); // Close the dialog
-            toast("Bonus has been updated successfully!.")
+            toast("Expense has been updated successfully!.")
             router.refresh();
         }
     }, [state]);
@@ -65,7 +65,7 @@ export function EditBonus({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit Bonus</DialogTitle>
+                    <DialogTitle>Edit Expense</DialogTitle>
                 </DialogHeader>
                 
                 <form action={dispatch}>
@@ -151,7 +151,7 @@ export function EditBonus({
     )
 }
 
-export function AddBonus({
+export function AddExpense({
     employeeId,
     
 } : {
@@ -159,15 +159,15 @@ export function AddBonus({
 
 }){
     const initialState = { message: null, errors: {} };
-    const [state, dispatch] = useFormState(addBonus, initialState);
+    const [state, dispatch] = useFormState(addExpense, initialState);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         
-        if (state.message === "Bonus added successfully!") {
+        if (state.message === "Expense added successfully!") {
             setIsDialogOpen(false); // Close the dialog
-            toast("Bonus has been added successfully!.")
+            toast("Expense has been added successfully!.")
             router.refresh();
         }
     }, [state]);
@@ -193,7 +193,7 @@ export function AddBonus({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add Bonus</DialogTitle>
+                    <DialogTitle>Add Expense</DialogTitle>
                 </DialogHeader>
                 
                 <form action={dispatch}>
@@ -265,7 +265,7 @@ export function AddBonus({
                     </div>
                     <DialogFooter>
                         {/* <DialogClose> */}
-                            <Button type="submit">Add Bonus</Button>
+                            <Button type="submit">Add Expense</Button>
                         {/* </DialogClose> */}
                     </DialogFooter>
                 </form>
@@ -274,7 +274,7 @@ export function AddBonus({
     )
 }
 
-export function DeleteBonus({
+export function DeleteExpense({
     id
 }: {
     id: number
@@ -284,7 +284,7 @@ export function DeleteBonus({
 
     const handleDelete = async () =>{
         setLoading(true)
-        const state = await deleteBonus(id)
+        const state = await deleteExpense(id)
         toast(state.message)
         router.refresh();
         setLoading(false)
