@@ -16,7 +16,7 @@ export async function fetchExpensesPages(employeeId : number, pageSize : number 
     if (name) endpointWithQuery += `&name=${name}`
     if (month) endpointWithQuery += `&month=${month}`
     if (year) endpointWithQuery += `&year=${year}`
-    if (employeeId) endpointWithQuery += `&employeeId=${employeeId}`
+    if (employeeId) endpointWithQuery += `&fkEmployeeId=${employeeId}`
 
     try {
         const response = await fetch(endpointWithQuery)
@@ -36,7 +36,7 @@ export async function fetchExpenses(employeeId: number,pageSize: number = 10, cu
   
     let endpointWithQuery = `${endpoint}/api/expense?pageSize=${pageSize}&currentPage=${currentPage}`;
   
-    if (employeeId) endpointWithQuery += `&employeeId=${employeeId}`
+    if (employeeId) endpointWithQuery += `&fkEmployeeId=${employeeId}`
     if (name) endpointWithQuery += `&name=${name}`
     if (month) endpointWithQuery += `&month=${month}`
     if (year) endpointWithQuery += `&year=${year}`
