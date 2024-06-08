@@ -126,12 +126,14 @@ export async function fetchRigLocations(pageSize: number = 10, currentPage: numb
 export async function fetchActiveRigLocations(pageSize: number = 10, currentPage: number = 1){
     noStore();
   
+    //TODO : 
     try{
-      const response = await fetch(`${endpoint}/api/rigLocation?currentPage=${currentPage}&pageSize=${pageSize}&status=active`)
-  
+      const response = await fetch(`${endpoint}/api/rigLocation?currentPage=${currentPage}&pageSize=${pageSize}`)
+      
       if(!response.ok){
         throw new Error(`Failed to fetch data, status: ${response.status}`)
       }
+      
       const object = await response.json();
   
       if(object?.data?.rigLocations){
@@ -142,7 +144,7 @@ export async function fetchActiveRigLocations(pageSize: number = 10, currentPage
   
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to fetch designation table. error');
+      throw new Error('Failed to fetch locations');
     }
   
   }

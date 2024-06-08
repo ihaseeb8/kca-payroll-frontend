@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { createEmployee } from "@/app/lib/actions/employees";
-import { Designation } from "@/app/lib/definitions";
+import { Designation, RigLocation } from "@/app/lib/definitions";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -24,7 +24,7 @@ import { Radio, XIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 // ... other imports ...
 
-export default function EmployeeForm({ designations }: { designations: Designation[] }) {
+export default function EmployeeForm({ designations, locations }: { designations: Designation[], locations: RigLocation[]}) {
   const initialState = { message: null, errors: {} };
 
   const [state, dispatch] = useFormState(createEmployee, initialState);
@@ -72,8 +72,10 @@ export default function EmployeeForm({ designations }: { designations: Designati
   type ValuePiece = Date | null;
 
   type Value = ValuePiece | [ValuePiece, ValuePiece];
-  const [value, onChange] = useState<Value>();
-  const [spouseDateOfBirth, onChange1] = useState<Value>()
+  const [dob, onDobChange] = useState<Value>();
+  const [dateOfJoining, onDateOfJoiningChange] = useState<Value>();
+  const [dateOfDeployment, onDateOfDeploymentChange] = useState<Value>();
+  const [spouseDateOfBirth, onSpouseDobChange] = useState<Value>()
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +105,7 @@ export default function EmployeeForm({ designations }: { designations: Designati
         <Card>
 
           <CardHeader>
-            <CardTitle>Employee Information</CardTitle>
+            <CardTitle>Employee Joining Information</CardTitle>
           </CardHeader>
 
           <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -152,7 +154,206 @@ export default function EmployeeForm({ designations }: { designations: Designati
                   ))}
               </div>
             </div>
-            <div className="grid gap-2 sm:col-span-2">
+
+            <div className="grid gap-2">
+              <Label htmlFor="dateOfJoining">Date of Joining</Label>
+
+              <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='dateOfJoining' onChange={onDateOfJoiningChange} value={dateOfJoining} />
+              <div id="dateOfJoining-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.dateOfJoining &&
+                  state.errors.dateOfJoining.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="joiningLetter">Joining Letter</Label>
+
+              <Input type="file" id="joiningLetter" name="joiningLetter" />
+
+              <div id="joiningLetter-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.joiningLetter &&
+                  state.errors.joiningLetter.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="basicSalary">Basic Salary</Label>
+
+              <Input type="number" id="basicSalary" name="basicSalary" placeholder="Enter Basic Salary in PKR"/>
+
+              <div id="basicSalary-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.basicSalary &&
+                  state.errors.basicSalary.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="percentage">Percentage</Label>
+
+              <Input type="number" id="percentage" name="percentage" step="0.01" placeholder="Enter Percentage upto two decimal points"/>
+
+              <div id="percentage-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.percentage &&
+                  state.errors.percentage.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="rotation">Rotation</Label>
+
+              <Input type="text" id="rotation" name="rotation" placeholder="On Days : Off Days" />
+
+              <div id="rotation-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.rotation &&
+                  state.errors.rotation.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+   
+          </CardContent>
+
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>First Deployment Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+            <div className="grid gap-2">
+              <Label htmlFor="dateOfDeployment">Date of Deployment</Label>
+
+              <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='dateOfDeployment' onChange={onDateOfDeploymentChange} value={dateOfDeployment} />
+              <div id="dateOfDeployment-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.dateOfDeployment &&
+                  state.errors.dateOfDeployment.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="fkLocationId">Location</Label>
+              <Select name="fkLocationId">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locations.map((location) => (
+                    <SelectItem key={location.id} value={String(location.id)}>
+                      {location.locationName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div id="fkLocationId-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.fkLocationId &&
+                  state.errors.fkLocationId.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="travelAllowance">Travel Allowance</Label>
+              <Input id="travelAllowance" name="travelAllowance" type="number" placeholder="Enter Travel Allowance in PKR" />
+              <div id="travelAllowance-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.travelAllowance &&
+                  state.errors.travelAllowance.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="hardshipAllowance">Hardship Allowance</Label>
+              <Input id="hardshipAllowance" name="hardshipAllowance" type="number" placeholder="Enter Hardship Allowance in PKR" />
+              <div id="hardshipAllowance-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.hardshipAllowance &&
+                  state.errors.hardshipAllowance.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+
+            
+
+          </CardContent>
+        </Card>
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Bank Account Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="bankName">Bank Name</Label>
+              <Input id="bankName" name="bankName" placeholder="Enter bank name" />
+              <div id="bankName-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.bankName &&
+                  state.errors.bankName.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="accountNumber">IBAN Number</Label>
+              <Input id="accountNumber" name="accountNumber" placeholder="Enter 24 digits iban" />
+              <div id="accountNumber-error" aria-live="polite" aria-atomic="true" className='mb-4'>
+                {state.errors?.accountNumber &&
+                  state.errors.accountNumber.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+          </CardContent>
+
+        </Card>
+
+
+        <Card>
+
+          <CardHeader>
+            <CardTitle>Personal Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+            <div className="grid gap-2">
               <Label htmlFor="profileImage">Profile Image</Label>
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
@@ -174,17 +375,6 @@ export default function EmployeeForm({ designations }: { designations: Designati
               </div>
             </div>
 
-          </CardContent>
-
-        </Card>
-
-        <Card>
-
-          <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-          </CardHeader>
-
-          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
@@ -229,7 +419,7 @@ export default function EmployeeForm({ designations }: { designations: Designati
             <div className="grid gap-2">
               <Label htmlFor="dateOfBirth">Date of Birth</Label>
 
-              <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='dateOfBirth' onChange={onChange} value={value} />
+              <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='dateOfBirth' onChange={onDobChange} value={dob} />
               <div id="dateOfBirth-error" aria-live="polite" aria-atomic="true" className='mb-4'>
                 {state.errors?.dateOfBirth &&
                   state.errors.dateOfBirth.map((error: string) => (
@@ -261,11 +451,6 @@ export default function EmployeeForm({ designations }: { designations: Designati
                   ))}
               </div>
             </div>
-
-
-
-
-
 
           </CardContent>
 
@@ -455,7 +640,7 @@ export default function EmployeeForm({ designations }: { designations: Designati
                 <div className="grid gap-2 col-span-2 sm:col-span-1">
                   <Label htmlFor="spouseDateOfBirth">Spouse Date of Birth</Label>
 
-                  <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='spouseDateOfBirth' onChange={onChange1} value={spouseDateOfBirth} />
+                  <DatePicker format="dd-MM-y" className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50' name='spouseDateOfBirth' onChange={onSpouseDobChange} value={spouseDateOfBirth} />
                   <div id="spouseDateOfBirth-error" aria-live="polite" aria-atomic="true" className='mb-4'>
                     {state.errors?.spouseDateOfBirth &&
                       state.errors.spouseDateOfBirth.map((error: string) => (
@@ -512,12 +697,12 @@ export default function EmployeeForm({ designations }: { designations: Designati
 
                       <Input id={`childName${index}`}
                         onChange={(e) => handleChildNameChange(e, index)}
-                        name={`childName${index}`} placeholder="Enter Child Name" />
+                        name={`childName${index}`} placeholder="Enter Child Name" required/>
 
                     </div>
                     <div className="grid gap-2 col-span-2 sm:col-span-1">
                       <Label htmlFor={`childGender${index}`}>Gender</Label>
-                      <Select name={`childGender${index}`}>
+                      <Select name={`childGender${index}`} required>
                         <SelectTrigger>
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
@@ -532,11 +717,12 @@ export default function EmployeeForm({ designations }: { designations: Designati
                       <Label htmlFor={`childCnic${index}`}>B-Form/CNIC</Label>
                       <Input id={`childCnic${index}`}
                         onChange={(e) => handleChildCnicChange(e, index)}
-                        name={`childCnic${index}`} placeholder="Enter child CNIC in the format XXXXX-XXXXXXX-X" />
+                        name={`childCnic${index}`} required placeholder="Enter child CNIC in the format XXXXX-XXXXXXX-X" />
                     </div>
                     <div className="grid gap-2 col-span-2 sm:col-span-1">
                       <Label htmlFor={`childDateOfBirth${index}`}>Date of Birth</Label>
                       <DatePicker
+                        required
                         format="dd-MM-y"
                         className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
                         name={`childDateOfBirth${index}`}
@@ -558,24 +744,7 @@ export default function EmployeeForm({ designations }: { designations: Designati
 
         </Card>
 
-        <Card>
-
-          <CardHeader>
-            <CardTitle>Bank Account Details</CardTitle>
-          </CardHeader>
-
-          <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div className="grid gap-2">
-              <Label htmlFor="bankName">Bank Name</Label>
-              <Input id="bankName" name="bankName" placeholder="Enter bank name" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="accountNumber">Account Number</Label>
-              <Input id="accountNumber" name="accountNumber" placeholder="Enter account number" />
-            </div>
-          </CardContent>
-
-        </Card>
+        
 
         <div id="form-response" aria-live="polite" aria-atomic="true" className='mb-4 md:flex justify-center'>
             {state.message && (

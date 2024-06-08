@@ -15,14 +15,14 @@ const endpoint = process.env.API_URL;
 
 // ------------------------------------- Create Employee
 const EmployeeFormSchema = z.object({
-  id: z.coerce.number().min(1, 'This field is required').max(999999, 'Employee number cannot be longer than 6 characters.'),
+  id: z.coerce.number().min(1, 'Invalid/Missing Field').max(999999, 'Employee number cannot be longer than 6 characters.'),
   name: z.string().min(1, 'Name is required'),
   gender: z.enum(["Male", "Female"]),
   dateOfBirth: z.date().refine(date => date <= new Date(), { message: 'Date of Birth cannot be in the future' }),
   cnic: z.string()
     .refine(cnic => /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic), "Missing/Invalid CNIC. Please enter in the format XXXXX-XXXXXXX-X"),
   fatherName: z.string().min(1, "Father's Name is required"),
-  fkDesignationId: z.string({ invalid_type_error: 'This field is required' }),
+  fkDesignationId: z.string().min(1, 'This field is required'),
   emailAddress: z.string().email('Missing/Invalid email'),
   currentAddress: z.string().min(1, 'Current Address is required'),
   permanentAddress: z.string().min(1, 'Permanent Address is required'),
@@ -30,21 +30,51 @@ const EmployeeFormSchema = z.object({
   landlineNumber: z.string(),
   profileImage: z.any()
     .refine(file => file.size <= MAX_FILE_SIZE, `Max image size is 5MB.`),
-  isMarried: z.enum(["Yes", "No"]),
-  haveChildren: z.enum(["Yes", "No"]),
+  isMarried: z.enum(["Yes", "No"], {required_error: 'Marital Status is required'}),
+  haveChildren: z.enum(["Yes", "No"], {required_error: 'Children Information is required'}),
   emergencyContactName: z.string(),
   relationOfEmergencyContact: z.string(),
   emergencyContactNumber: z.string(),
-  bankName: z.string().optional(),
-  accountNumber: z.string().optional(),
+
+  //Bank information
+  bankName: z.string().min(1, 'Bank Name is required'),
+  accountNumber: z.string().refine(iban => iban.length === 24, 'IBAN must be exactly 24 characters long'),
+  
+  // Joining Information
+  dateOfJoining: z.string().refine(date => date !== '', { message: 'Date of Joining is required' }),
+  joiningLetter: z.any().refine(file => file instanceof File && file.name !=='undefined', 'Joining letter is required'),
+  basicSalary: z.string().min(1, 'Basic Salary is required').refine(value => {
+    const number = parseFloat(value);
+    return !isNaN(number) && number > 0;
+  }, 'Basic Salary must be a positive number'),
+  percentage: z.string().min(1, 'Percentage is required').refine(value => {
+    const number = parseFloat(value);
+    return !isNaN(number) && number >= 0 && number <= 100 && /^\d+(\.\d{1,2})?$/.test(value);
+  }, 'Percentage must be between 0 and 100 and have up to two decimal points'),
+  rotation: z.string().min(1, 'Rotation is required').refine(value => {
+    return /^[0-9]+:[0-9]+$/.test(value);
+  }, 'Rotation must be in the format number:number'),
+
+  // First Delpoyment
+  dateOfDeployment: z.string().refine(date => date !== '', { message: 'Date of Deployment is required' }),
+  fkLocationId: z.string().refine(value => value !== '', { message: 'Location is required'}),
+  travelAllowance: z.string().min(1, 'Travel Allowance is required').refine(value => {
+    const number = parseFloat(value);
+    return !isNaN(number) && number > 0;
+  }, 'Travel Allowance must be a positive number'),
+  hardshipAllowance: z.string().min(1, 'Hardship Allowance is required').refine(value => {
+    const number = parseFloat(value);
+    return !isNaN(number) && number > 0;
+  }, 'Hardship Allowance must be a positive number'),
+
 })
 
 const EmployeeSpouseSchema = z.object({
   spouseName: z.string().min(1, 'Name is required'),
-  spouseGender: z.enum(["Male", "Female"]),
+  spouseGender: z.enum(["Male", "Female"], {required_error: 'Spouse Gender is required'}),
   spouseCnic: z.string()
     .refine(cnic => /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic), "Missing/Invalid CNIC. Please enter in the format XXXXX-XXXXXXX-X"),
-    spouseDateOfBirth: z.date().refine(date => date <= new Date(), { message: 'Date of Birth cannot be in the future' }),
+  spouseDateOfBirth: z.string().refine(date => date !== '', { message: 'Date of Birth is required' }),
 
 })
 
@@ -79,12 +109,23 @@ export type EmployeeFormState = {
     haveChildren?: string[];
     bankName?: string[];
     accountNumber?: string[];
+    dateOfJoining?: string[];
+    joiningLetter?: string[];
+    basicSalary?: string[];
+    percentage?: string[];
+    rotation?: string[];
+    dateOfDeployment?: string[];
+    fkLocationId?: string[];
+    travelAllowance?: string[];
+    hardshipAllowance?: string[];
   };
   message?: string | null;
 };
 
 export async function createEmployee(prevState: EmployeeFormState, formData: FormData) {
   noStore();
+
+  console.log(formData)
 
   // validate form fields using Zod
   const validatedFields = EmployeeFormSchema.safeParse({
@@ -107,7 +148,16 @@ export async function createEmployee(prevState: EmployeeFormState, formData: For
     relationOfEmergencyContact: formData.get('relationOfEmergencyContact'),
     emergencyContactNumber: formData.get('emergencyContactNumber'),
     bankName: formData.get('bankName'),
-    accountNumber: formData.get('accountNumber')
+    accountNumber: formData.get('accountNumber'),
+    dateOfJoining: formData.get('dateOfJoining'),
+    joiningLetter: formData.get('joiningLetter'),
+    basicSalary: formData.get('basicSalary'),
+    percentage: formData.get('percentage'),
+    rotation: formData.get('rotation'),
+    dateOfDeployment: formData.get('dateOfDeployment'),
+    fkLocationId: formData.get('fkLocationId'),
+    travelAllowance: formData.get('travelAllowance'),
+    hardshipAllowance: formData.get('hardshipAllowance')
   })
 
   if (!validatedFields.success) {
@@ -122,9 +172,9 @@ export async function createEmployee(prevState: EmployeeFormState, formData: For
   if (validatedFields.data.isMarried === 'Yes') {
     const validateWifeFields = EmployeeSpouseSchema.safeParse({
       spouseCnic: formData.get('spouseCnic'),
-      spouseGender: formData.get('spouseGender'),
+      spouseGender: formData.get('spouseGender') || undefined,
       spouseName: formData.get('spouseName'),
-      spouseDateOfBirth: new Date(formData.get('spouseDateOfBirth') as string)
+      spouseDateOfBirth: formData.get('spouseDateOfBirth')
     })
 
     if (!validateWifeFields.success) {
